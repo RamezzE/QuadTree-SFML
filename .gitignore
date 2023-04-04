@@ -1,0 +1,5 @@
+SFML-2.5.1 (mingw)
+/obj
+*.o
+.vscode
+*.exe

@@ -1,0 +1,32 @@
+#pragma once
+
+#include <vector>
+#include "SFML/Graphics.hpp"
+
+#include "GameState.hpp"
+
+typedef unsigned short ushort;
+
+class Game {
+public:
+	Game(ushort width, ushort height);
+	~Game();
+
+	void changeScreen(GameState* state);
+	void previousScreen();
+
+	void gameLoop();
+
+	sf::RenderWindow* window;
+
+    ushort width, height;
+
+private:
+	std::vector<GameState*> states;
+	GameState* CurrentState();
+	
+	void pushState(GameState* state);
+	void popState();
+
+	
+};
