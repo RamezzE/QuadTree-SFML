@@ -10,6 +10,15 @@ typedef unsigned short ushort;
 
 ushort myWidth, myHeight;
 
+sf::Color defaultColor = sf::Color::Cyan; 
+sf::Color collisionColor = sf::Color::Magenta;
+
+sf::Color quadTreeColor = sf::Color::Red;
+float particleSpeed = 100.f, radius = 5.f;
+
+float borderWeight = 0.5f;
+bool showQuadTree = false;
+
 int main()
 {
     // Show or hide console window
@@ -17,9 +26,6 @@ int main()
     ShowWindow(hWnd, 0);
 
     srand(time(NULL));
-    
-    // myWidth = sf::VideoMode::getDesktopMode().width;
-    // myHeight = sf::VideoMode::getDesktopMode().height;
 
     ushort screenWidth = sf::VideoMode::getDesktopMode().width * 0.5;
     ushort screenHeight = sf::VideoMode::getDesktopMode().height * 0.5;

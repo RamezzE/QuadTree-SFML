@@ -3,15 +3,15 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "Collision.hpp"
-
 typedef unsigned short ushort;
+extern float borderWeight;
+extern sf::Color quadTreeColor;
 
 template <class DataType>
 class QuadTree
 {
 
-public:
+private:
     class Node
     {
     public:
@@ -21,6 +21,7 @@ public:
             this->capacity = capacity;
             this->divided = false;
         }
+
         sf::FloatRect boundary;
         ushort capacity;
         bool divided;
@@ -59,8 +60,25 @@ public:
 
     typedef Node *NodePtr;
 
+    NodePtr root;
+
+    // helper functions for the public recursive functions
+
+    void insert_helper(DataType *object, NodePtr node);
+
+    void query_helper(sf::FloatRect range, std::vector<DataType *> &objectsFound, NodePtr node);
+
+    bool search_helper(DataType *object, NodePtr node);
+
+    void reset_helper(NodePtr node);
+
+    void draw_helper(sf::RenderWindow *window, NodePtr node);
+
+public:
     // No Argument Constructor
     QuadTree();
+
+    ~QuadTree();
 
     // Constructor
     QuadTree(sf::FloatRect boundary, ushort capacity);
@@ -82,27 +100,26 @@ public:
     // Returns true if the two objects are equal
     bool equals(DataType *A, DataType *B);
 
-private:
-    NodePtr root;
-
-    // helper functions for the public recursive functions
-
-    void insert_helper(DataType *object, NodePtr node);
-
-    void query_helper(sf::FloatRect range, std::vector<DataType *> &objectsFound, NodePtr node);
-
-    bool search_helper(DataType *object, NodePtr node);
-
-    void reset_helper(NodePtr node);
+    // Draws the QuadTree borders
+    void draw(sf::RenderWindow *window);
 };
 
 template <class DataType>
-QuadTree<DataType>::QuadTree() {}
+QuadTree<DataType>::QuadTree()
+{
+    root = nullptr;
+}
 
 template <class DataType>
 QuadTree<DataType>::QuadTree(sf::FloatRect boundary, ushort capacity)
 {
     setData(boundary, capacity);
+}
+
+template <class DataType>
+QuadTree<DataType>::~QuadTree()
+{
+    reset();
 }
 
 template <class DataType>
@@ -146,9 +163,14 @@ void QuadTree<DataType>::insert(DataType *object)
 template <class DataType>
 void QuadTree<DataType>::insert_helper(DataType *object, NodePtr node)
 {
-    // if the object is already in the tree, it returns
-    if (search_helper(object, node))
-        return;
+    //// the search function considerably slows down the Quad Tree
+    //// as it recursively checks the whole quad tree for the object
+    //// everytime insert is called, so it is better to not use it
+    //// and make sure not to reinsert the object into the tree
+
+    //// if the object is already in the tree, it returns
+    // if (search_helper(object, node))
+    //     return;
 
     // if the object is not within the boundary, it returns
     if (!node->boundary.intersects(object->getGlobalBounds()))
@@ -186,6 +208,7 @@ void QuadTree<DataType>::query_helper(sf::FloatRect range, std::vector<DataType 
         {
             if (range.intersects(node->objects[i]->getGlobalBounds()))
             {
+                // does not push the object itself back into the set
                 if (range == node->objects[i]->getGlobalBounds())
                     continue;
 
@@ -241,7 +264,33 @@ bool QuadTree<DataType>::search_helper(DataType *object, NodePtr node)
 }
 
 template <class DataType>
-bool QuadTree<DataType>::equals(DataType *A, DataType *B)
+void QuadTree<DataType>::draw(sf::RenderWindow *window)
+{
+    draw_helper(window, root);
+}
+
+template <class DataType>
+void QuadTree<DataType>::draw_helper(sf::RenderWindow *window, NodePtr node)
+{
+    sf::RectangleShape rect;
+    rect.setSize(sf::Vector2f(node->boundary.width, node->boundary.height));
+    rect.setPosition(node->boundary.left, node->boundary.top);
+    rect.setFillColor(sf::Color::Transparent);
+    rect.setOutlineColor(quadTreeColor);
+    rect.setOutlineThickness(borderWeight);
+    window->draw(rect);
+
+    if (node->divided)
+    {
+        draw_helper(window, node->NE);
+        draw_helper(window, node->NW);
+        draw_helper(window, node->SE);
+        draw_helper(window, node->SW);
+    }
+}
+
+template <class DataType>
+inline bool QuadTree<DataType>::equals(DataType *A, DataType *B)
 {
     return A->getGlobalBounds() == B->getGlobalBounds() && A->getPosition() == B->getPosition();
 }

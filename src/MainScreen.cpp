@@ -2,11 +2,16 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <cmath>
+
+extern sf::Color defaultColor, collisionColor;
+extern bool showQuadTree;
+extern float particleSpeed, radius;
 
 MainScreen::MainScreen(Game *game)
 {
     this->game = game;
+
+    pause = false;
     init();
 }
 
@@ -14,21 +19,19 @@ void MainScreen::init()
 {
     boundary = sf::FloatRect(0, 0, game->width, game->height);
 
-    ushort objectNum = 200; // range 100 kda fps
+    ushort objectNum = 500;
 
-    treeCapacity = objectNum / 100;
-    if (treeCapacity < 4)
-        treeCapacity = 4;
+    treeCapacity = 4;
 
     quadTree.setData(boundary, treeCapacity);
-    sf::CircleShape *circlePtr;
+
+    sf::CircleShape circle(radius);
     for (ushort i = 0; i < objectNum; i++)
     {
-        circlePtr = new sf::CircleShape(10.f);
-        circlePtr->setPosition((rand() % (int)boundary.width), ((rand() % (int)boundary.height)));
-        myObjects.push_back(circlePtr);
+        circle.setPosition((rand() % (int)boundary.width), ((rand() % (int)boundary.height)));
+        myObjects.push_back(circle);
     }
-    
+
     mouseRect.setSize(sf::Vector2f(game->height / 3.f, game->height / 3.f));
     mouseRect.setFillColor(sf::Color::Transparent);
     mouseRect.setOutlineThickness(2);
@@ -51,19 +54,21 @@ void MainScreen::handleInput()
             {
             case sf::Mouse::Left:
                 for (int i = 0; i < myObjects.size(); i++)
-                    myObjects[i]->setPosition((rand() % (int)boundary.width), ((rand() % (int)boundary.height)));
+                    myObjects[i].setPosition((rand() % (int)boundary.width), ((rand() % (int)boundary.height)));
+
                 break;
 
             case sf::Mouse::Right:
-                for (int i = myObjects.size() - 1; i >= 0; i--)
-                {
-                    if (myObjects[i]->getGlobalBounds().contains(sf::Mouse::getPosition(*(game->window)).x, sf::Mouse::getPosition(*(game->window)).y))
-                    {
-                        delete myObjects[i];
-                        myObjects.erase(myObjects.begin() + i);
-                        break;
-                    }
-                }
+                showQuadTree = !showQuadTree;
+                break;
+            }
+        }
+        if (event.type == sf::Event::KeyPressed)
+        {
+            switch (event.key.code)
+            {
+            case sf::Keyboard::Space:
+                pause = !pause;
                 break;
             }
         }
@@ -76,44 +81,74 @@ void MainScreen::update(const float dt)
 
     quadTree.reset();
 
-    for (ushort i = 0; i < myObjects.size(); i++)
+    for (auto i = 0; i < myObjects.size(); i++)
     {
-        myObjects[i]->setFillColor(sf::Color::Green);
-        quadTree.insert(myObjects[i]);
+        myObjects[i].setFillColor(defaultColor);
+        quadTree.insert(&myObjects[i]);
     }
 
-    // checking every single object for collision
+    mouseRect.setPosition(sf::Mouse::getPosition(*(game->window)).x, sf::Mouse::getPosition(*(game->window)).y);
+    quadTree.query(mouseRect.getGlobalBounds(), myCollisions);
+
+    for (auto i = 0; i < myCollisions.size(); i++)
+        myCollisions[i]->setFillColor(sf::Color::Yellow);
+
+    myCollisions.clear();
+
     for (ushort i = 0; i < myObjects.size(); i++)
     {
-        quadTree.query(myObjects[i]->getGlobalBounds(), myCollisions);
+        if (myObjects[i].getFillColor() == sf::Color::Yellow)
+            continue;
+
+        quadTree.query(myObjects[i].getGlobalBounds(), myCollisions);
+
         for (ushort j = 0; j < myCollisions.size(); j++)
         {
-            if (Collision::CircleShapeCollision(*myObjects[i], *myCollisions[j]))
+            if (CircleShapeCollision(myObjects[i], *myCollisions[j]))
             {
                 // changing the color of the colliding objects
-                myObjects[i]->setFillColor(sf::Color::Red);
-                // myCollisions[j]->setFillColor(sf::Color::Red);
+                myObjects[i].setFillColor(collisionColor);
+                // std::cout << sizeof(myCollisions[j]) << std::endl;
+                // std::cout << sizeof(*myCollisions[j]) << std::endl;
                 break;
             }
         }
         myCollisions.clear();
     }
 
-    mouseRect.setPosition(sf::Mouse::getPosition(*(game->window)).x, sf::Mouse::getPosition(*(game->window)).y);
+    //// brute force approach
 
-    quadTree.query(mouseRect.getGlobalBounds(), myCollisions);
-    for (ushort i = 0; i < myCollisions.size(); i++)
-        myCollisions[i]->setFillColor(sf::Color::Yellow);
+    // for (ushort i = 0; i < myObjects.size(); i++)
+    //     myObjects[i].setFillColor(defaultColor);
 
-    myCollisions.clear();
+    // for (ushort i = 0; i < myObjects.size(); i++)
+    // {
+    //     for (ushort j = i + 1; j < myObjects.size(); j++)
+    //     {
+    //         if (i == j)
+    //             continue;
+    //         if (!myObjects[i].getGlobalBounds().intersects(myObjects[j].getGlobalBounds()))
+    //             continue;
 
-    moveObjects(80, dt);
+    //         if (CircleShapeCollision(myObjects[i], myObjects[j]))
+    //         {
+    //             myObjects[i].setFillColor(collisionColor);
+    //             myObjects[j].setFillColor(collisionColor);
+    //         }
+    //     }
+    // }
+
+    if (!pause)
+        moveObjects(particleSpeed, dt);
 }
 
 void MainScreen::draw()
 {
-    for (ushort i = 0; i < myObjects.size(); i++)
-        game->window->draw(*myObjects[i]);
+    if (showQuadTree)
+        quadTree.draw(game->window);
+
+    for (ushort i = 0; i < myObjects.size() - 1; i++)
+        game->window->draw(myObjects[i]);
 
     game->window->draw(mouseRect);
 }
@@ -121,6 +156,26 @@ void MainScreen::draw()
 void MainScreen::moveObjects(float speed, const float dt)
 {
     // Objects move randomly
+    sf::Vector2f velocity = sf::Vector2f(0, 0);
+
     for (ushort i = 0; i < myObjects.size(); i++)
-        myObjects[i]->move(speed * (rand() % 3 - 1) * dt, speed * (rand() % 3 - 1) * dt);
+    {
+        velocity.x = (rand() % (int)speed - (speed) / 2);
+        velocity.y = (rand() % (int)speed - (speed) / 2);
+        myObjects[i].move(velocity * dt);
+    }
+}
+
+bool MainScreen::CircleShapeCollision(const sf::CircleShape &A, const sf::CircleShape &B)
+{
+    // Calculate the distance between the centers of the circles
+    float dx = A.getGlobalBounds().left - B.getGlobalBounds().left;
+    float dy = A.getGlobalBounds().top - B.getGlobalBounds().top;
+    float distance = std::sqrt(dx * dx + dy * dy);
+
+    // Compare the distance to the sum of the radii
+    if (distance <= A.getRadius() + B.getRadius())
+        return true;
+
+    return false;
 }

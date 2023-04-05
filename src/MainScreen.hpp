@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <set>
+#include <cmath>
 
 #include "Game.hpp"
 #include "QuadTree.hpp"
@@ -24,12 +26,14 @@ private:
     sf::FloatRect boundary;
     ushort treeCapacity;
 
-    std::vector<sf::CircleShape*> myObjects;
-    std::vector<sf::CircleShape *> myCollisions;
+    std::vector<sf::CircleShape> myObjects;
+    std::vector<sf::CircleShape*> myCollisions;
 
     sf::RectangleShape mouseRect;
 
-    void moveObjects(float speed, const float dt);
+    bool pause;
 
-    bool CircleShapeCollision(sf::CircleShape &A, sf::CircleShape &B);
+    void moveObjects(float speed, const float dt);
+    
+    bool CircleShapeCollision(const sf::CircleShape &A, const sf::CircleShape &B);
 };
