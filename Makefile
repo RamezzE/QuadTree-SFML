@@ -20,7 +20,7 @@ LDFLAGS := -L"SFML-2.5.1 (mingw)\lib"
 LDLIBS := -lsfml-graphics-s-d -lsfml-window-s-d -lsfml-system-s-d -lopengl32 -lwinmm -lgdi32 -lsfml-main-d -lfreetype
 
 # APP_NAME := "FlarkyBird"
-TARGET := "myApp.exe"
+TARGET := "myApp"
 
 .PHONY: all clean
 
@@ -46,4 +46,4 @@ run:
 
 clean:
 	del $(OBJ_DIR)\*.o
-	del $(TARGET)
+	del $(TARGET).exe

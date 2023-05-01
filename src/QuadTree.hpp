@@ -3,6 +3,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
+
 typedef unsigned short ushort;
 extern float borderWeight;
 extern sf::Color quadTreeColor;
