@@ -24,10 +24,13 @@ public:
     void setBorder(float thickness, sf::Color color, sf::Color hoverColor, sf::Color selectedColor);
 
     void setTextFormat(sf::Color color, ushort size);
+    void setTextColor(sf::Color color);
 
     void setTextLimit(int limit);
 
     void setString(std::string str);
+
+    void setBackgroundColor(sf::Color color);
 
     void setSelected(bool selected);
 
@@ -41,7 +44,7 @@ public:
 
     bool isSelected();
 
-    sf::Vector2f getPostion();
+    sf::Vector2f getPosition();
 
     sf::FloatRect getGlobalBounds();
 
@@ -52,13 +55,14 @@ public:
 private:
     sf::RectangleShape border;
     sf::Text text;
+    sf::Font font;
 
     sf::Vector2f position;
     sf::Vector2f origin;
 
-    int textLimit;
+    int textLimit, subsetCounter, maxCharactersDisplayed;
 
-    bool selected, hover;
+    bool selected, hover, validTextEntered;
 
     std::string inputString;
 
@@ -69,6 +73,7 @@ private:
     enum
     {
         BACKSPACE = 8,
+        SPACE = 32,
         PERIOD = 46,
         ZERO = 48,
         NINE = 57,
@@ -83,4 +88,9 @@ private:
         ALPHA_ONLY,
         ALPHA_NUMERIC
     };
+
+    bool isMouseOver(TextBox textbox, sf::RenderWindow *window);
+    float getCharacterWidth();
+    int calculateMaxCharactersDisplayed();
+
 };

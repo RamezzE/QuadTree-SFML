@@ -3,11 +3,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-
 typedef unsigned short ushort;
-extern float borderWeight;
-extern sf::Color quadTreeColor;
-
 template <class DataType>
 class QuadTree
 {
@@ -168,7 +164,7 @@ void QuadTree<DataType>::insert_helper(DataType *object, NodePtr node)
     //// as it recursively checks the whole quad tree for the object
     //// everytime insert is called, so it is better to not use it
     //// and make sure not to reinsert the object into the tree
-
+    
     //// if the object is already in the tree, it returns
     // if (search_helper(object, node))
     //     return;
@@ -277,8 +273,8 @@ void QuadTree<DataType>::draw_helper(sf::RenderWindow *window, NodePtr node)
     rect.setSize(sf::Vector2f(node->boundary.width, node->boundary.height));
     rect.setPosition(node->boundary.left, node->boundary.top);
     rect.setFillColor(sf::Color::Transparent);
-    rect.setOutlineColor(quadTreeColor);
-    rect.setOutlineThickness(borderWeight);
+    rect.setOutlineColor(sf::Color::Yellow);
+    rect.setOutlineThickness(1);
     window->draw(rect);
 
     if (node->divided)
