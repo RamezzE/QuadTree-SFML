@@ -1,5 +1,4 @@
 #include "CheckBox.hpp"
-
 #include <iostream>
 
 CheckBox::CheckBox()

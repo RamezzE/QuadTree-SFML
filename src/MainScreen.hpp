@@ -9,6 +9,7 @@
 #include "QuadTree.hpp"
 #include "TextBox.hpp"
 #include "Common.hpp"
+#include "Particle.hpp"
 
 class MainScreen : public GameState
 {
@@ -22,12 +23,12 @@ public:
 private:
     Game *game;
 
-    QuadTree<sf::CircleShape> quadTree;
+    QuadTree<Particle> quadTree;
     sf::FloatRect boundary;
     ushort treeNodeCapacity;
 
-    std::vector<sf::CircleShape> myObjects;
-    std::vector<sf::CircleShape *> myCollisions;
+    std::vector<Particle> myObjects;
+    std::vector<Particle *> myCollisions;
 
     sf::RectangleShape mouseRect;
 

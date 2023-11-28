@@ -8,6 +8,7 @@ extern sf::Color defaultColor, collisionColor, mouseRectColor;
 extern bool showQuadTree, showMouseRect;
 extern float particleSpeed;
 
+
 MainScreen::MainScreen(Game *game)
 {
     this->game = game;
@@ -27,7 +28,6 @@ MainScreen::MainScreen(Game *game)
 
 void MainScreen::init()
 {
-
     initializeObjects();
 
     mouseRect.setSize(sf::Vector2f(game->height / 3.f, game->height / 3.f));
@@ -57,6 +57,7 @@ void MainScreen::init()
         labels[i].setFillColor(sf::Color::White);
         labels[i].setPosition(sf::Vector2f(game->width - textboxes[i].getGlobalBounds().width - labels[i].getGlobalBounds().width, i * temp.height));
     }
+
     textboxes[0].setString(std::to_string(objectNum));
     textboxes[0].setTextLimit(5);
 
@@ -70,6 +71,9 @@ void MainScreen::handleInput()
 
     while (game->window->pollEvent(event))
     {
+        for (int i = 0; i < textboxes.size(); i++)
+            textboxes[i].handleInput(event);
+
         if (event.type == sf::Event::Closed)
             game->window->close();
 
@@ -82,17 +86,14 @@ void MainScreen::handleInput()
             case sf::Mouse::Left:
 
                 for (int i = 0; i < textboxes.size(); i++)
-                {
-                    textboxes[i].handleInput(event);
                     if (textboxes[i].isSelected())
                         selected = true;
-                }
 
                 if (selected)
                     break;
 
                 for (ushort i = 0; i < myObjects.size(); i++)
-                    myObjects[i].setPosition((rand() % (int)boundary.width), ((rand() % (int)boundary.height)));
+                    myObjects[i].setPosition(sf::Vector2f((rand() % (int)boundary.width), ((rand() % (int)boundary.height))));
 
                 break;
 
@@ -100,12 +101,6 @@ void MainScreen::handleInput()
                 showQuadTree = !showQuadTree;
                 break;
             }
-        }
-
-        else if (event.type == sf::Event::TextEntered)
-        {
-            for (int i = 0; i < textboxes.size(); i++)
-                textboxes[i].handleInput(event);
         }
 
         else if (event.type == sf::Event::KeyPressed)
@@ -147,28 +142,27 @@ void MainScreen::update(const float dt)
     // inserting all the objects into the tree every frame
     for (ushort i = 0; i < myObjects.size(); i++)
     {
-        myObjects[i].setFillColor(defaultColor);
+        myObjects[i].setColor(defaultColor);
         quadTree.insert(&myObjects[i]);
     }
 
     for (ushort i = 0; i < myObjects.size(); i++)
     {
         // already queried the object for collisions
-        if (myObjects[i].getFillColor() == collisionColor)
+        if (myObjects[i].getColor() == collisionColor)
             continue;
 
         // query the quadtree for each object's global bounds and store the results in myCollisions
         quadTree.query(myObjects[i].getGlobalBounds(), myCollisions);
 
         for (ushort j = 0; j < myCollisions.size(); j++)
-        {
-            if (Collision::CircleShapeCollision(myObjects[i], *myCollisions[j]))
+            if (Collision::ParticleCollision(myObjects[i], *myCollisions[j]))
             {
                 // changing the color of the colliding objects
-                myObjects[i].setFillColor(collisionColor);
-                myCollisions[j]->setFillColor(collisionColor);
+                myObjects[i].setColor(collisionColor);
+                myCollisions[j]->setColor(collisionColor);
             }
-        }
+        
         myCollisions.clear();
     }
 
@@ -180,10 +174,13 @@ void MainScreen::update(const float dt)
         quadTree.query(mouseRect.getGlobalBounds(), myCollisions);
 
         for (ushort i = 0; i < myCollisions.size(); i++)
-            myCollisions[i]->setFillColor(mouseRectColor);
+            myCollisions[i]->setColor(mouseRectColor);
 
         myCollisions.clear();
     }
+
+    if (!pause)
+        moveObjects(particleSpeed, dt);
 
     //// brute force approach
 
@@ -206,9 +203,6 @@ void MainScreen::update(const float dt)
     //         }
     //     }
     // }
-
-    if (!pause)
-        moveObjects(particleSpeed, dt);
 }
 
 void MainScreen::draw()
@@ -217,7 +211,7 @@ void MainScreen::draw()
         quadTree.draw(game->window);
 
     for (ushort i = 0; i < myObjects.size() - 1; i++)
-        game->window->draw(myObjects[i]);
+        myObjects[i].render(game->window);
 
     if (showMouseRect)
         game->window->draw(mouseRect);
@@ -233,22 +227,23 @@ void MainScreen::moveObjects(float speed, const float dt)
 {
     // Objects move randomly
     sf::Vector2f velocity = sf::Vector2f(0, 0);
-
+    
     for (ushort i = 0; i < myObjects.size(); i++)
     {
         velocity.x = (rand() % (int)speed - (speed) / 2);
         velocity.y = (rand() % (int)speed - (speed) / 2);
-        myObjects[i].move(velocity * dt);
+        myObjects[i].setVelocity(velocity);
+        myObjects[i].update(dt);
     }
 }
 
 void MainScreen::initializeObjects()
 {
     myObjects.clear();
-    sf::CircleShape circle(radius);
+    Particle circle(radius);
     for (ushort i = 0; i < objectNum; i++)
     {
-        circle.setPosition((rand() % (int)boundary.width), ((rand() % (int)boundary.height)));
+        circle.setPosition(sf::Vector2f((rand() % (int)boundary.width), ((rand() % (int)boundary.height))));
         myObjects.push_back(circle);
     }
 }

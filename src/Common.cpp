@@ -15,4 +15,10 @@ namespace Collision
         float distance = sqrt(pow(A.getGlobalBounds().left - B.getGlobalBounds().left, 2) + pow(A.getGlobalBounds().top - B.getGlobalBounds().top, 2));
         return distance < A.getRadius() + B.getRadius();
     }
+
+    bool ParticleCollision(const Particle &A, const Particle &B)
+    {
+        return CircleShapeCollision(A.getShape(), B.getShape());
+    }
+
 }
