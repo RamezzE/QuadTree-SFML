@@ -25,6 +25,8 @@ MainScreen::MainScreen(Game *game)
     init();
 }
 
+static sf::Vector2f button5Position;
+
 void MainScreen::init()
 {
     initializeObjects();
@@ -47,6 +49,7 @@ void MainScreen::init()
         textboxes[i].setSize(sf::Vector2f(100, characterSize));
         textboxes[i].setBorder(2, sf::Color::White, sf::Color::Black, sf::Color::Magenta);
         textboxes[i].allowNumberOnly();
+        textboxes[i].setBackgroundColor(sf::Color(100, 100, 100, 100));
 
         labels.push_back(sf::Text());
         labels[i].setFont(*font);
@@ -75,7 +78,7 @@ void MainScreen::init()
     textboxes[0].setTextLimit(5);
 
     textboxes[1].setString(std::to_string(radius).substr(0, 3));
-    textboxes[1].setTextLimit(3);
+    textboxes[1].setTextLimit(2);
 
     textboxes[2].setString(std::to_string(particleSpeed).substr(0, 3));
     textboxes[2].setTextLimit(3);
@@ -92,43 +95,53 @@ void MainScreen::init()
         buttons[i].setCharacterSize(characterSize);
         buttons[i].setBorder(sf::Color(100, 100, 100, 100), 2);
         buttons[i].setTextColor(sf::Color::White);
-        buttons[i].setPosition(sf::Vector2f(game->width - buttons[i].getGlobalBounds().width, textboxes[textboxes.size() - 1].getPosition().y + textboxes[textboxes.size() - 1].getGlobalBounds().height * 1.85 * (i + 1)));
+        buttons[i].setPosition(sf::Vector2f(game->width - buttons[i].getGlobalBounds().width*1.1, textboxes[textboxes.size() - 1].getPosition().y + textboxes[textboxes.size() - 1].getGlobalBounds().height * 1.85 * (i + 1)));
     }
 
-    buttons[0].setPosition(sf::Vector2f(game->width - buttons[0].getGlobalBounds().width, textboxes[textboxes.size() - 1].getPosition().y + textboxes[textboxes.size() - 1].getGlobalBounds().height * 1.75));
-    buttons[4].setPosition(sf::Vector2f(buttons[4].getPosition().x, buttons[4].getPosition().y - buttons[4].getGlobalBounds().height));
+    buttons[0].setPosition(sf::Vector2f(game->width - buttons[0].getGlobalBounds().width*1.1, textboxes[textboxes.size() - 1].getPosition().y + textboxes[textboxes.size() - 1].getGlobalBounds().height * 1.75));
+    buttons[4].setPosition(sf::Vector2f(buttons[4].getPosition().x, buttons[4].getPosition().y - buttons[4].getGlobalBounds().height/2));
     buttons[5].setPosition(sf::Vector2f(buttons[5].getPosition().x, buttons[5].getPosition().y - buttons[5].getGlobalBounds().height));
-    
-    
+
     buttons[0].setString("Apply");
     buttons[0].setOnAction([&]()
-                           {
+    {
         for (ushort i = 0; i < textboxes.size(); i++)
-                if (textboxes[i].getString().length() == 0 || textboxes[i].getString() == "0")
-                    return;
+            if (textboxes[i].getString().length() == 0 || textboxes[i].getString() == "0" || textboxes[i].getString() == "0.")
+                return;
 
         objectNum = std::stoi(textboxes[0].getString());
         radius = std::stof(textboxes[1].getString());
-        initializeObjects(); });
+
+        particleSpeed = std::stof(textboxes[2].getString());
+        quadTree.setData(boundary, std::stoi(textboxes[3].getString()));
+
+        initializeObjects();
+    });
 
     buttons[1].setString("Pause");
     buttons[1].setOnAction([&]()
                            {
         pause = !pause;
-        buttons[1].setString(pause ? "Resume" : "Pause"); });
+        buttons[1].setString(pause ? "Resume" : "Pause"); 
+        buttons[1].setBackgroundColor(pause ? sf::Color(100,100,100,150) : sf::Color::Black);
+        });
 
     buttons[2].setString("        Show\nMouse Query");
     buttons[2].setOnAction([&]()
                            {
         showMouseRect = !showMouseRect;
-        buttons[2].setString(showMouseRect ? "         Hide\nMouse Query" : "        Show\nMouse Query"); });
+        buttons[2].setString(showMouseRect ? "         Hide\nMouse Query" : "        Show\nMouse Query"); 
+        buttons[2].setBackgroundColor(showMouseRect ? sf::Color(100,100,100,150) : sf::Color::Black);
+        });
 
     buttons[3].setString("Show QuadTree");
 
     buttons[3].setOnAction([&]()
                            {
         showQuadTree = !showQuadTree;
-        buttons[3].setString(showQuadTree ? "Hide QuadTree" : "Show QuadTree"); });
+        buttons[3].setString(showQuadTree ? "Hide QuadTree" : "Show QuadTree"); 
+        buttons[3].setBackgroundColor(showQuadTree ? sf::Color(100,100,100,150) : sf::Color::Black);
+        });
 
     buttons[4].setString("Randomize");
 
@@ -138,10 +151,16 @@ void MainScreen::init()
             myObjects[i].setPosition(sf::Vector2f((rand() % (int)boundary.width), ((rand() % (int)boundary.height)))); });
 
     buttons[5].setString("Brush Mode");
+
+    button5Position = buttons[5].getPosition();
+
     buttons[5].setOnAction([&]()
                            {
         brushMode = !brushMode;
-        buttons[5].setString(brushMode ? "Cancel Brush Mode" : "Brush Mode"); });
+        buttons[5].setString(brushMode ? "Cancel Brush Mode" : "Brush Mode"); 
+        buttons[5].setPosition((brushMode? sf::Vector2f(button5Position.x - buttons[5].getGlobalBounds().width/6,button5Position.y) : button5Position ));
+        buttons[5].setBackgroundColor(brushMode ? sf::Color(100,100,100,150) : sf::Color::Black);
+        });
 }
 
 void MainScreen::handleInput()
@@ -220,7 +239,7 @@ void MainScreen::update(const float dt)
 
         // query the quadtree for each object's global bounds and store the results in myCollisions
         quadTree.query(myObjects[i].getGlobalBounds(), myCollisions);
-
+        
         for (ushort j = 0; j < myCollisions.size(); j++)
             if (Collision::ParticleCollision(myObjects[i], *myCollisions[j]))
             {
@@ -295,13 +314,13 @@ void MainScreen::draw()
 void MainScreen::moveObjects(float speed, const float dt)
 {
     // Objects move randomly
-    sf::Vector2f velocity = sf::Vector2f(0, 0);
+    // sf::Vector2f velocity = sf::Vector2f(0, 0);
 
     for (ushort i = 0; i < myObjects.size(); i++)
     {
-        velocity.x = (rand() % (int)speed - (speed) / 2);
-        velocity.y = (rand() % (int)speed - (speed) / 2);
-        myObjects[i].setVelocity(velocity);
+        // velocity.x = (rand() % (int)speed - (speed) / 2);
+        // velocity.y = (rand() % (int)speed - (speed) / 2);
+        // myObjects[i].setVelocity(velocity);
         myObjects[i].update(dt, boundary);
     }
 }
@@ -309,18 +328,21 @@ void MainScreen::moveObjects(float speed, const float dt)
 void MainScreen::initializeObjects()
 {
     myObjects.clear();
-    Particle circle(radius);
+    Particle particle(radius);
     for (ushort i = 0; i < objectNum; i++)
     {
-        circle.setPosition(sf::Vector2f((rand() % (int)boundary.width), ((rand() % (int)boundary.height))));
-        myObjects.push_back(circle);
+        particle.setPosition(sf::Vector2f((rand() % (int)boundary.width), ((rand() % (int)boundary.height))));
+        particle.setVelocity(sf::Vector2f((rand() % (int)particleSpeed - (particleSpeed) / 2), (rand() % (int)particleSpeed - (particleSpeed) / 2)));
+        myObjects.push_back(particle);
     }
 }
 
 void MainScreen::brush()
 {
-    Particle circle(radius);
-    circle.setPosition(sf::Vector2f(sf::Mouse::getPosition(*(game->window)).x, sf::Mouse::getPosition(*(game->window)).y));
-    myObjects.push_back(circle);
+    Particle particle(radius);
+    particle.setPosition(sf::Vector2f(sf::Mouse::getPosition(*(game->window)).x, sf::Mouse::getPosition(*(game->window)).y));
+    particle.setVelocity(sf::Vector2f((rand() % (int)particleSpeed - (particleSpeed) / 2), (rand() % (int)particleSpeed - (particleSpeed) / 2)));
+    myObjects.push_back(particle);
+    objectNum++;
     textboxes[0].setString(std::to_string(objectNum));
 }

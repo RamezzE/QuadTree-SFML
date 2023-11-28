@@ -11,14 +11,15 @@ QUAD_TREE := $(wildcard $(SRC_DIR)/QuadTree.hpp)
 
 CC = g++
 
-CFLAGS       := -std=c++14 -g -gdwarf-2 -fno-omit-frame-pointer
+# CFLAGS       := -std=c++14 -g -gdwarf-2 -fno-omit-frame-pointer
+CFLAGS 		 := -std=c++14
 
 CPPFLAGS  := -I"SFML-2.5.1 (mingw)\include" -DSFML_STATIC
 
 LDFLAGS := -L"SFML-2.5.1 (mingw)\lib"
 
-LDLIBS := -lsfml-graphics-s-d -lsfml-window-s-d -lsfml-system-s-d -lopengl32 -lwinmm -lgdi32 -lsfml-main-d -lfreetype
-
+# LDLIBS := -lsfml-graphics-s-d -lsfml-window-s-d -lsfml-system-s-d -lopengl32 -lwinmm -lgdi32 -lsfml-main-d -lfreetype
+LDLIBS := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lwinmm -lgdi32 -lsfml-main -lfreetype
 # APP_NAME := "FlarkyBird"
 TARGET := "myApp"
 
