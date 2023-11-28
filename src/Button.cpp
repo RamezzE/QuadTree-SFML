@@ -15,7 +15,6 @@ Button::Button(sf::Font &font)
 void Button::init()
 {
     mouseOver = pressed  = disabled = false;
-    pressedColor = sf::Color(178, 178, 178);
 
     border.setFillColor(sf::Color::Transparent);
 
@@ -61,7 +60,15 @@ void Button::setText(std::string text, sf::Color color)
     textColor = color;
     hoverColor = color;
 
-    border.setSize(sf::Vector2f(this->text.getGlobalBounds().width * 1.1, this->text.getCharacterSize()));
+    border.setSize(sf::Vector2f(this->text.getGlobalBounds().width * 1.1, this->text.getGlobalBounds().height*1.35));
+    setPosition(border.getPosition());
+}
+
+void Button::setString(std::string text)
+{
+    this->text.setString(text);
+    border.setSize(sf::Vector2f(this->text.getGlobalBounds().width * 1.1, this->text.getGlobalBounds().height*1.35));
+    setPosition(border.getPosition());
 }
 
 void Button::setBorder(sf::Color color, int thickness)
@@ -77,9 +84,14 @@ void Button::setBackgroundColor(sf::Color color)
     border.setFillColor(color);
 }
 
-void Button::setPressedColor(sf::Color color)
+void Button::setOnAction(std::function<void()> onAction)
 {
-    pressedColor = color;
+    this->onAction = onAction;
+}
+
+std::function<void()> Button::getOnAction()
+{
+    return onAction;
 }
 
 void Button::handleInput(sf::Event event)

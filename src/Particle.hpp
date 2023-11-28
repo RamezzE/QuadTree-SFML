@@ -5,7 +5,7 @@ class Particle {
 public:
     Particle(float radius);
 
-    void update(const float dt);
+    void update(const float dt, sf::FloatRect boundary);
 
     void render(sf::RenderWindow *window);
 

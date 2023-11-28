@@ -8,8 +8,20 @@ Particle::Particle(float radius)
     velocity = sf::Vector2f(0, 0);
 }
 
-void Particle::update(const float dt)
+void Particle::update(const float dt, sf::FloatRect boundary)
 {
+    if (shape.getPosition().x < boundary.left )
+        velocity.x *= -1;
+
+    if (shape.getPosition().y < boundary.top)
+        velocity.y *= -1;
+
+    if (shape.getPosition().x > boundary.left + boundary.width)
+        velocity.x *= -1;
+
+    if (shape.getPosition().y > boundary.top + boundary.height)
+        velocity.y *= -1;
+    
     shape.move(velocity * dt);
 }
 

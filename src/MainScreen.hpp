@@ -10,6 +10,7 @@
 #include "TextBox.hpp"
 #include "Common.hpp"
 #include "Particle.hpp"
+#include "Button.hpp"
 
 class MainScreen : public GameState
 {
@@ -32,7 +33,7 @@ private:
 
     sf::RectangleShape mouseRect;
 
-    bool pause;
+    bool pause, brushMode, pressed;
 
     sf::Font* font;
 
@@ -43,9 +44,13 @@ private:
     std::vector<TextBox> textboxes;
     std::vector<sf::Text> labels;
 
+    std::vector<Button> buttons;
+
     void init();
 
     void initializeObjects();
 
     void moveObjects(float speed, const float dt);
+
+    void brush();
 };
