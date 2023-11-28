@@ -7,11 +7,9 @@ CheckBox::CheckBox()
     init();
 }
 
-
 void CheckBox::init()
 {
-    mouseOver = pressed = checked = false;
-    enabled = true;
+    mouseOver = pressed = checked = disabled = false;
     checkedColor = sf::Color(178, 178, 178);
 
     border.setFillColor(sf::Color::Transparent);
@@ -55,6 +53,9 @@ void CheckBox::setCheckedColor(sf::Color color)
 
 void CheckBox::handleInput(sf::Event event)
 {
+    if (disabled)
+        return;
+    
     if (event.type == sf::Event::MouseButtonPressed)
     {
         switch (event.mouseButton.button)
@@ -103,9 +104,12 @@ void CheckBox::update(sf::RenderWindow *window)
 
 void CheckBox::render(sf::RenderWindow *window)
 {
+    if (disabled)
+        return;
+    
     window->draw(border);
 
-    if (!enabled) {
+    if (disabled) {
         sf::RectangleShape disabledShade(border);
         disabledShade.setFillColor(sf::Color(0, 0, 0, 150));
         window->draw(disabledShade);

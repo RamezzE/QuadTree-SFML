@@ -2,8 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include "Definitions.hpp"
-
 class CheckBox
 {
 public:
