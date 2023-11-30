@@ -47,6 +47,7 @@ public:
     sf::Vector2f getPosition();
 
     sf::FloatRect getGlobalBounds();
+    sf::FloatRect getLocalBounds();
 
     std::string getString();
 

@@ -28,8 +28,8 @@ int main()
 
     srand(time(NULL));
 
-    ushort screenWidth = sf::VideoMode::getDesktopMode().width * 0.5;
-    ushort screenHeight = sf::VideoMode::getDesktopMode().height * 0.5;
+    ushort screenWidth = sf::VideoMode::getDesktopMode().width * 0.75f;
+    ushort screenHeight = sf::VideoMode::getDesktopMode().height* 0.75f;
 
     myWidth = screenWidth;
     myHeight = screenHeight;

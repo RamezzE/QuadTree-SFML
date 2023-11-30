@@ -236,6 +236,11 @@ sf::FloatRect TextBox::getGlobalBounds()
     return border.getGlobalBounds();
 }
 
+sf::FloatRect TextBox::getLocalBounds()
+{
+    return border.getLocalBounds();
+}
+
 bool TextBox::isHovered()
 {
     return hover;

@@ -53,4 +53,6 @@ private:
     void moveObjects(float speed, const float dt);
 
     void brush();
+
+    void resize(sf::Event event);
 };

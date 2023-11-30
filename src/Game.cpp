@@ -10,7 +10,7 @@ Game::Game(ushort width, ushort height)
     this->width = width;
     this->height = height;
 
-    window = new sf::RenderWindow(sf::VideoMode(width, height), "QuadTree Collisions", sf::Style::Titlebar | sf::Style::Close);
+    window = new sf::RenderWindow(sf::VideoMode(width, height), "QuadTree Visualization");
     window->setFramerateLimit(60);
 }
 
