@@ -1,4 +1,4 @@
-#include "Common.hpp"
+#include "../hpp/Common.hpp"
 namespace Input
 {
     bool isMouseOver(TextBox textbox, sf::RenderWindow *window)

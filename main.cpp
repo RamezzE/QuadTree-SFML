@@ -1,10 +1,8 @@
-//
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <windows.h>
 
-#include "Game.hpp"
-#include "MainScreen.hpp"
+#include "src/hpp/Game.hpp"
+#include "src/hpp/MainScreen.hpp"
 
 typedef unsigned short ushort;
 
@@ -22,10 +20,6 @@ bool showQuadTree = false, showMouseRect = false;
 
 int main()
 {
-    // Show or hide console window
-    HWND hWnd = GetConsoleWindow();
-    ShowWindow(hWnd, 0);
-
     srand(time(NULL));
 
     ushort screenWidth = sf::VideoMode::getDesktopMode().width * 0.75f;

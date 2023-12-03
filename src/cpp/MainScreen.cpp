@@ -1,4 +1,4 @@
-#include "MainScreen.hpp"
+#include "../hpp/MainScreen.hpp"
 
 #include <iostream>
 #include <iomanip>

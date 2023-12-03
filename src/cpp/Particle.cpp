@@ -1,4 +1,4 @@
-#include "Particle.hpp"
+#include "../hpp/Particle.hpp"
 
 Particle::Particle(float radius)
 {

@@ -3,3 +3,7 @@ SFML-2.5.1 (mingw)
 *.o
 .vscode
 *.exe
+/.idea
+src/cpp/assets
+/cmake-build-debug
+/SFML
