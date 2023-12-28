@@ -13,8 +13,10 @@ public:
     void update(const sf::RenderWindow *window);
     void render(sf::RenderWindow *window) const;
 
+    void setOrigin(sf::Vector2f origin);
     void setPosition(sf::Vector2f position);
     void setDisabled(bool disabled);
+    void setPadding(float padding);
 
     void setFont(const sf::Font &font);
     void setBorder(sf::Color color, int thickness);
@@ -39,12 +41,14 @@ private:
     void init();
 
     bool isMouseOver(const sf::RectangleShape& sprite, const sf::RenderWindow *window) const;
+    void resize();
 
     sf::RectangleShape border;
     sf::Font font;
     sf::Text text;
 
     bool mouseOver, pressed, disabled;
+    float padding;
 
     sf::Color backgroundColor, borderColor, textColor, hoverColor;
 
