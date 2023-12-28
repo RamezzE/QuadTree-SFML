@@ -8,13 +8,13 @@ extern sf::Color defaultColor, collisionColor, mouseRectColor;
 extern bool showQuadTree, showMouseRect;
 extern float particleSpeed;
 
-// static sf::Vector2f button5Position;
+static sf::Vector2f button5Position;
 
 MainScreen::MainScreen(Game* game) {
     this->game = game;
 
     pause = brushMode = pressed = false;
-    boundary = sf::FloatRect(0, 0, game->width, game->height);
+    boundary = sf::FloatRect(0, 0, game->width * 0.6, game->height);
 
     treeNodeCapacity = 4, objectNum = 800, radius = 2.0;
 
@@ -105,7 +105,7 @@ MainScreen::MainScreen(Game* game) {
 
     buttons[2].setOnAction([&]() {
         showMouseRect = !showMouseRect;
-        buttons[2].setString(showMouseRect ? "         Hide\nMouse Query" : "        Show\nMouse Query");
+        buttons[2].setString(showMouseRect ? "Hide Mouse Query" : "Show Mouse Query");
         buttons[2].setBackgroundColor(showMouseRect ? sf::Color(100, 100, 100, 150) : sf::Color::Black);
     });
 
@@ -124,10 +124,10 @@ MainScreen::MainScreen(Game* game) {
     buttons[5].setOnAction([&]() {
         brushMode = !brushMode;
         buttons[5].setString(brushMode ? "Cancel Brush Mode" : "Brush Mode");
-        // buttons[5].setPosition((brushMode
-        //                             ? sf::Vector2f(button5Position.x - buttons[5].getGlobalBounds().width / 6,
-        //                                            button5Position.y)
-        //                             : button5Position));
+        buttons[5].setPosition((brushMode
+                                    ? sf::Vector2f(button5Position.x - buttons[5].getGlobalBounds().width / 6,
+                                                   button5Position.y)
+                                    : button5Position));
         buttons[5].setBackgroundColor(brushMode ? sf::Color(100, 100, 100, 150) : sf::Color::Black);
     });
 
@@ -195,6 +195,8 @@ void MainScreen::init() {
             game->height * 0.35 + (game->height * 0.1 * i+1)
             ));
     }
+
+    button5Position = buttons[5].getPosition();
 
     buttons[0].setString("Apply");
     buttons[1].setString("Pause");
@@ -342,7 +344,15 @@ void MainScreen::initializeObjects() {
 }
 
 void MainScreen::brush() {
+    if (sf::Mouse::getPosition(*(game->window)).x > boundary.getPosition().x + boundary.getSize().x
+        || sf::Mouse::getPosition(*(game->window)).x < boundary.getPosition().x
+        || sf::Mouse::getPosition(*(game->window)).y > boundary.getPosition().y + boundary.getSize().y
+        || sf::Mouse::getPosition(*(game->window)).y < boundary.getPosition().y)
+
+        return;
+
     Particle particle(radius);
+
     particle.setPosition(sf::Vector2f(sf::Mouse::getPosition(*(game->window)).x,
                                       sf::Mouse::getPosition(*(game->window)).y));
     particle.setVelocity(sf::Vector2f((rand() % static_cast<int>(particleSpeed) - (particleSpeed) / 2),
@@ -355,11 +365,19 @@ void MainScreen::brush() {
 void MainScreen::resize(const sf::Event& event) {
     const sf::FloatRect visibleArea = sf::FloatRect(0, 0, event.size.width, event.size.height);
     game->window->setView(sf::View(visibleArea));
-    quadTree.setData(visibleArea, treeNodeCapacity);
 
     game->width = event.size.width;
     game->height = event.size.height;
-    boundary = visibleArea;
+    boundary = sf::FloatRect(0, 0, game->width * 0.6, game->height);
+    quadTree.setData(boundary, treeNodeCapacity);
+
+    for (auto& myObject: myObjects) {
+        if (myObject.getPosition().x > boundary.width)
+            myObject.setPosition(sf::Vector2f(boundary.width, myObject.getPosition().y));
+
+        if (myObject.getPosition().y > boundary.height)
+            myObject.setPosition(sf::Vector2f(myObject.getPosition().x, boundary.height));
+    }
 
     init();
 }
