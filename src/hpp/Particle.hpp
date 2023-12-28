@@ -3,11 +3,11 @@
 
 class Particle {
 public:
-    Particle(float radius);
+    explicit Particle(float radius);
 
-    void update(const float dt, sf::FloatRect boundary);
+    void update(float dt, sf::FloatRect boundary);
 
-    void render(sf::RenderWindow *window);
+    void render(sf::RenderWindow *window) const;
 
     void setPosition(sf::Vector2f position);
 

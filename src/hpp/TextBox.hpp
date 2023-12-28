@@ -1,19 +1,16 @@
 #pragma once
-#include <iostream>
 #include <SFML/Graphics.hpp>
-
-typedef unsigned short ushort;
 
 class TextBox
 {
 public:
-    TextBox(sf::Font &font);
+    explicit TextBox(const sf::Font &font);
 
-    void handleInput(sf::Event event);
+    void handleInput(const sf::Event& event);
 
-    void update(sf::RenderWindow *window);
+    void update(const sf::RenderWindow *window);
 
-    void draw(sf::RenderWindow *window);
+    void draw(sf::RenderWindow *window) const;
 
     void setSize(sf::Vector2f size);
 
@@ -23,12 +20,12 @@ public:
 
     void setBorder(float thickness, sf::Color color, sf::Color hoverColor, sf::Color selectedColor);
 
-    void setTextFormat(sf::Color color, ushort size);
+    void setTextFormat(sf::Color color, float size);
     void setTextColor(sf::Color color);
 
     void setTextLimit(int limit);
 
-    void setString(std::string str);
+    void setString(const std::string& str);
 
     void setBackgroundColor(sf::Color color);
 
@@ -40,18 +37,20 @@ public:
 
     void allowAlphaNumeric();
 
-    bool isHovered();
+    bool isHovered() const;
 
-    bool isSelected();
+    bool isSelected() const;
 
-    sf::Vector2f getPosition();
+    bool empty() const;
 
-    sf::FloatRect getGlobalBounds();
-    sf::FloatRect getLocalBounds();
+    sf::Vector2f getPosition() const;
 
-    std::string getString();
+    sf::FloatRect getGlobalBounds() const;
+    sf::FloatRect getLocalBounds() const;
 
-    int getCharacterSize();
+    std::string getString() const;
+
+    int getCharacterSize() const;
 
 private:
     sf::RectangleShape border;
@@ -69,7 +68,7 @@ private:
 
     sf::Color borderColor, borderHoverColor, borderSelectedColor;
 
-    ushort typeAllowed;
+    float typeAllowed{};
 
     enum
     {
@@ -90,8 +89,8 @@ private:
         ALPHA_NUMERIC
     };
 
-    bool isMouseOver(TextBox textbox, sf::RenderWindow *window);
-    float getCharacterWidth();
+    bool isMouseOver(const sf::RenderWindow *window) const;
+    float getCharacterWidth() const;
     int calculateMaxCharactersDisplayed();
 
 };

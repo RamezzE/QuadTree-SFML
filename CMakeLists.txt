@@ -15,8 +15,6 @@ add_executable(QuadTree
 
         src/cpp/Button.cpp
 
-        src/cpp/CheckBox.cpp
-
         src/cpp/Common.cpp
 
         src/cpp/Game.cpp

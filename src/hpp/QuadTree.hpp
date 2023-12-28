@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <iostream>
 #include <SFML/Graphics.hpp>
 
 typedef unsigned short ushort;
@@ -14,16 +13,28 @@ private:
     public:
         Node(sf::FloatRect boundary, ushort capacity)
         {
+            NE = NW = SE = SW = nullptr;
+
             this->boundary = boundary;
             this->capacity = capacity;
             this->divided = false;
+
+            const sf::Vector2f position(boundary.left, boundary.top);
+            const sf::Vector2f size(boundary.width, boundary.height);
+
+            this->lines[0] = sf::Vertex(position, sf::Color::Yellow);
+            this->lines[1] = sf::Vertex(position + sf::Vector2f(size.x, 0), sf::Color::Yellow);
+            this->lines[2] = sf::Vertex(position + size, sf::Color::Yellow);
+            this->lines[3] = sf::Vertex(position + sf::Vector2f(0, size.y), sf::Color::Yellow);
+            this->lines[4] = sf::Vertex(position, sf::Color::Yellow);
         }
 
         sf::FloatRect boundary;
-        ushort capacity;
-        bool divided;
+        ushort capacity{};
+        bool divided{};
+        sf::Vertex lines[5];
 
-        std::vector<DataType *> objects;
+        std::vector<DataType *> objects{};
 
         Node *NE;
         Node *NW;
@@ -33,13 +44,13 @@ private:
         // Subdivides the QuadTree into 4 smaller QuadTrees
         void subdivide()
         {
-            float x1 = boundary.left;
-            float y1 = boundary.top;
-            float x2 = boundary.width + x1;
-            float y2 = boundary.height + y1;
+            const float x1 = boundary.left;
+            const float y1 = boundary.top;
+            const float x2 = boundary.width + x1;
+            const float y2 = boundary.height + y1;
 
             // setting sides for each rectangle appropriately
-            sf::Vector2f size(boundary.width / 2, boundary.height / 2);
+            const sf::Vector2f size(boundary.width / 2, boundary.height / 2);
 
             sf::FloatRect ne(sf::Vector2f((x1 + x2) / 2, y1), size);
             sf::FloatRect nw(sf::Vector2f(x1, y1), size);
@@ -52,6 +63,9 @@ private:
             SW = new Node(sw, capacity); // south west
 
             this->divided = true;
+        }
+        void draw(sf::RenderWindow* window) const {
+            window->draw(this->lines, 5, sf::LineStrip);
         }
     };
 
@@ -75,6 +89,7 @@ public:
     // No Argument Constructor
     QuadTree();
 
+    // Destructor
     ~QuadTree();
 
     // Constructor
@@ -82,7 +97,7 @@ public:
 
     void setData(sf::FloatRect boundary, ushort capacity);
 
-    // Resets the QuadTree
+    // Resets the QuadTree (Removes all objects & deletes all nodes)
     void reset();
 
     // Inserts an object into the QuadTree
@@ -91,13 +106,13 @@ public:
     // Returns all objects that are within a given range
     void query(sf::FloatRect range, std::vector<DataType *> &objectsFound);
 
-    // Returns true if the object is in the
+    // Returns true if the object is in the tree
     bool search(DataType *object);
 
     // Returns true if the two objects are equal
     bool equals(DataType *A, DataType *B);
 
-    // Draws the QuadTree borders
+    // Draws the QuadTree borders on an sf::RenderWindow
     void draw(sf::RenderWindow *window);
 };
 
@@ -164,7 +179,7 @@ void QuadTree<DataType>::insert_helper(DataType *object, NodePtr node)
     //// as it recursively checks the whole quad tree for the object
     //// everytime insert is called, so it is better to not use it
     //// and make sure not to reinsert the object into the tree
-    
+
     //// if the object is already in the tree, it returns
     // if (search_helper(object, node))
     //     return;
@@ -269,13 +284,7 @@ void QuadTree<DataType>::draw(sf::RenderWindow *window)
 template <class DataType>
 void QuadTree<DataType>::draw_helper(sf::RenderWindow *window, NodePtr node)
 {
-    sf::RectangleShape rect;
-    rect.setSize(sf::Vector2f(node->boundary.width, node->boundary.height));
-    rect.setPosition(node->boundary.left, node->boundary.top);
-    rect.setFillColor(sf::Color::Transparent);
-    rect.setOutlineColor(sf::Color::Yellow);
-    rect.setOutlineThickness(1);
-    window->draw(rect);
+    node->draw(window);
 
     if (node->divided)
     {

@@ -1,6 +1,6 @@
 #include "../hpp/Particle.hpp"
 
-Particle::Particle(float radius)
+Particle::Particle(const float radius)
 {
     shape.setPosition(0,0);
     shape.setRadius(radius);
@@ -25,27 +25,26 @@ void Particle::update(const float dt, sf::FloatRect boundary)
     shape.move(velocity * dt);
 }
 
-void Particle::render(sf::RenderWindow *window)
-{
+void Particle::render(sf::RenderWindow *window) const {
     window->draw(shape);
 }
 
-void Particle::setPosition(sf::Vector2f position)
+void Particle::setPosition(const sf::Vector2f position)
 {
     shape.setPosition(position);
 }
 
-void Particle::setVelocity(sf::Vector2f velocity)
+void Particle::setVelocity(const sf::Vector2f velocity)
 {
     this->velocity = velocity;
 }
 
-void Particle::setRadius(float radius)
+void Particle::setRadius(const float radius)
 {
     shape.setRadius(radius);
 }
 
-void Particle::setColor(sf::Color color)
+void Particle::setColor(const sf::Color color)
 {
     shape.setFillColor(color);
 }

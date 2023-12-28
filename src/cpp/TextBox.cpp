@@ -1,8 +1,6 @@
 #include "../hpp/TextBox.hpp"
 
-static int max = 999999;
-
-TextBox::TextBox(sf::Font &font)
+TextBox::TextBox(const sf::Font &font)
 {
     text.setFont(font);
     this->font = font;
@@ -23,7 +21,7 @@ TextBox::TextBox(sf::Font &font)
     maxCharactersDisplayed = 99999;
 }
 
-void TextBox::handleInput(sf::Event event)
+void TextBox::handleInput(const sf::Event& event)
 {
     if (event.type == sf::Event::MouseButtonPressed)
     {
@@ -35,18 +33,21 @@ void TextBox::handleInput(sf::Event event)
             else
                 selected = false;
             break;
+        default:
+            break;
         }
+
     }
     else if (event.type == sf::Event::TextEntered)
     {
-        std::string tempString = inputString;
+        const std::string tempString = inputString;
 
         if (!selected)
             return;
 
-        ushort inputCode = event.text.unicode;
+        const float inputCode = event.text.unicode;
 
-        if (inputCode == BACKSPACE && inputString.length() > 0)
+        if (inputCode == BACKSPACE && !inputString.empty())
         {
             inputString.erase(inputString.length() - 1, inputString.length());
             validTextEntered = true;
@@ -95,7 +96,7 @@ void TextBox::handleInput(sf::Event event)
     }
 }
 
-void TextBox::update(sf::RenderWindow *window)
+void TextBox::update(const sf::RenderWindow *window)
 {
     if (subsetCounter < 0)
         subsetCounter = 0;
@@ -108,7 +109,7 @@ void TextBox::update(sf::RenderWindow *window)
 
             while ((text.getGlobalBounds().left + text.getGlobalBounds().width) >= (border.getGlobalBounds().left + border.getGlobalBounds().width * 0.9))
             {
-                text.setString(((std::string)(text.getString())).substr(1));
+                text.setString(static_cast<std::string>(text.getString()).substr(1));
                 subsetCounter++;
             }
         }
@@ -124,7 +125,7 @@ void TextBox::update(sf::RenderWindow *window)
     if (selected)
         border.setOutlineColor(borderSelectedColor);
 
-    if (isMouseOver(*this, window))
+    if (isMouseOver(window))
     {
         hover = true;
         if (!selected)
@@ -137,19 +138,18 @@ void TextBox::update(sf::RenderWindow *window)
         border.setOutlineColor(borderColor);
 }
 
-void TextBox::draw(sf::RenderWindow(*window))
-{
+void TextBox::draw(sf::RenderWindow(*window)) const {
     window->draw(border);
     window->draw(text);
 }
 
-void TextBox::setSize(sf::Vector2f size)
+void TextBox::setSize(const sf::Vector2f size)
 {
     border.setSize(size);
     calculateMaxCharactersDisplayed();
 }
 
-void TextBox::setPosition(sf::Vector2f position)
+void TextBox::setPosition(const sf::Vector2f position)
 {
     this->position = position;
     border.setPosition(position);
@@ -157,14 +157,14 @@ void TextBox::setPosition(sf::Vector2f position)
     text.setPosition(position);
 }
 
-void TextBox::setOrigin(sf::Vector2f origin)
+void TextBox::setOrigin(const sf::Vector2f origin)
 {
     this->origin = origin;
     border.setOrigin(origin);
     text.setOrigin(origin);
 }
 
-void TextBox::setBorder(float thickness, sf::Color color, sf::Color hoverColor, sf::Color selectedColor)
+void TextBox::setBorder(const float thickness, const sf::Color color, const sf::Color hoverColor, const sf::Color selectedColor)
 {
     border.setOutlineColor(color);
     borderColor = color;
@@ -173,13 +173,13 @@ void TextBox::setBorder(float thickness, sf::Color color, sf::Color hoverColor, 
     border.setOutlineThickness(thickness);
 }
 
-void TextBox::setString(std::string str)
+void TextBox::setString(const std::string& str)
 {
     inputString = str;
     text.setString(inputString);
 }
 
-void TextBox::setTextFormat(sf::Color color, ushort size)
+void TextBox::setTextFormat(const sf::Color color, const float size)
 {
     text.setFillColor(color);
     text.setCharacterSize(size);
@@ -191,17 +191,17 @@ void TextBox::setTextColor(sf::Color color)
     text.setFillColor(color);
 }
 
-void TextBox::setTextLimit(int limit)
+void TextBox::setTextLimit(const int limit)
 {
     this->textLimit = limit;
 }
 
-void TextBox::setBackgroundColor(sf::Color color)
+void TextBox::setBackgroundColor(const sf::Color color)
 {
     border.setFillColor(color);
 }
 
-void TextBox::setSelected(bool selected)
+void TextBox::setSelected(const bool selected)
 {
     this->selected = selected;
 }
@@ -221,59 +221,62 @@ void TextBox::allowAlphaNumeric()
     typeAllowed = ALPHA_NUMERIC;
 }
 
-int TextBox::getCharacterSize()
+int TextBox::getCharacterSize() const
 {
     return text.getCharacterSize();
 }
 
-sf::Vector2f TextBox::getPosition()
+sf::Vector2f TextBox::getPosition() const
 {
     return position;
 }
 
-sf::FloatRect TextBox::getGlobalBounds()
+sf::FloatRect TextBox::getGlobalBounds() const
 {
     return border.getGlobalBounds();
 }
 
-sf::FloatRect TextBox::getLocalBounds()
+sf::FloatRect TextBox::getLocalBounds() const
 {
     return border.getLocalBounds();
 }
 
-bool TextBox::isHovered()
+bool TextBox::isHovered() const
 {
     return hover;
 }
 
-bool TextBox::isSelected()
+bool TextBox::isSelected() const
 {
     return selected;
 }
 
-std::string TextBox::getString()
+std::string TextBox::getString() const
 {
     return inputString;
 }
 
-bool TextBox::isMouseOver(TextBox textbox, sf::RenderWindow *window)
+bool TextBox::isMouseOver(const sf::RenderWindow *window) const
 {
-    return textbox.getGlobalBounds().contains(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
+    return getGlobalBounds().contains(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
 }
 
-float TextBox::getCharacterWidth()
+float TextBox::getCharacterWidth() const
 {
     char c = 'A';
-    sf::Glyph glyph = font.getGlyph(c, getCharacterSize(), false);
+    const sf::Glyph glyph = font.getGlyph(c, getCharacterSize(), false);
 
     return glyph.advance;
 }
 
 int TextBox::calculateMaxCharactersDisplayed()
 {
-    sf::FloatRect textBoxBounds = border.getGlobalBounds();
-    sf::FloatRect textBounds = text.getGlobalBounds();
-    int maxChars = static_cast<int>(textBoxBounds.width / getCharacterWidth());
+    const sf::FloatRect textBoxBounds = border.getGlobalBounds();
+    const int maxChars = static_cast<int>(textBoxBounds.width / getCharacterWidth());
     maxCharactersDisplayed = maxChars;
     return maxChars;
+}
+
+bool TextBox::empty() const {
+    return inputString.empty();
 }

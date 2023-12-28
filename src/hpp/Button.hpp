@@ -7,38 +7,38 @@ class Button
 {
 public:
     Button();
-    Button(sf::Font &font);
+    explicit Button(const sf::Font &font);
     
     void handleInput(sf::Event event);
-    void update(sf::RenderWindow *window);
-    void render(sf::RenderWindow *window);
+    void update(const sf::RenderWindow *window);
+    void render(sf::RenderWindow *window) const;
 
     void setPosition(sf::Vector2f position);
     void setDisabled(bool disabled);
 
-    void setFont(sf::Font &font);
+    void setFont(const sf::Font &font);
     void setBorder(sf::Color color, int thickness);
-    void setText(std::string text,sf::Color color);
-    void setString(std::string text);
+    void setText(const std::string& text,sf::Color color);
+    void setString(const std::string& text);
     void setCharacterSize(int size);
     void setTextColor(sf::Color color);
     void setBackgroundColor(sf::Color color);
     void setBackground(sf::Texture &texture);
 
-    void setOnAction(std::function<void()> onAction);
+    void setOnAction(const std::function<void()>& onAction);
 
-    bool isMouseOver();
+    bool isMouseOver() const;
 
-    sf::FloatRect getGlobalBounds();
-    sf::FloatRect getLocalBounds();
-    sf::Vector2f getPosition();
-    sf::Color getTextColor();
-    std::function<void()> getOnAction();
+    sf::FloatRect getGlobalBounds() const;
+    sf::FloatRect getLocalBounds() const;
+    sf::Vector2f getPosition() const;
+    sf::Color getTextColor() const;
+    std::function<void()> getOnAction() const;
 
 private:
     void init();
 
-    bool isMouseOver(sf::RectangleShape sprite, sf::RenderWindow *window);
+    bool isMouseOver(const sf::RectangleShape& sprite, const sf::RenderWindow *window) const;
 
     sf::RectangleShape border;
     sf::Font font;

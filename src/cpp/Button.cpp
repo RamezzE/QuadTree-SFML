@@ -1,12 +1,11 @@
 #include "../hpp/Button.hpp"
 
-#include <iostream>
 Button::Button()
 {
     init();
 }
 
-Button::Button(sf::Font &font)
+Button::Button(const sf::Font &font)
 {
     this->font = font;
     init();
@@ -27,13 +26,13 @@ void Button::setDisabled(bool disabled)
     this->disabled = disabled;
 }
 
-void Button::setFont(sf::Font &font)
+void Button::setFont(const sf::Font& font)
 {
     this->font = font;
     text.setFont(font);
 }
 
-void Button::setCharacterSize(int size)
+void Button::setCharacterSize(const int size)
 {
     text.setCharacterSize(size);
     border.setSize(sf::Vector2f(text.getGlobalBounds().width * 1.1, text.getGlobalBounds().height * 1.2));
@@ -41,7 +40,7 @@ void Button::setCharacterSize(int size)
     text.setOrigin(temp.left + temp.width / 2, temp.top + temp.height / 2);
 }
 
-void Button::setPosition(sf::Vector2f position)
+void Button::setPosition(const sf::Vector2f position)
 {
     text.setPosition(position);
 
@@ -53,7 +52,7 @@ void Button::setPosition(sf::Vector2f position)
     border.setPosition(position);
 }
 
-void Button::setText(std::string text, sf::Color color)
+void Button::setText(const std::string& text, const sf::Color color)
 {
     this->text.setString(text);
     this->text.setFillColor(color);
@@ -64,32 +63,32 @@ void Button::setText(std::string text, sf::Color color)
     setPosition(border.getPosition());
 }
 
-void Button::setString(std::string text)
+void Button::setString(const std::string& text)
 {
     this->text.setString(text);
     border.setSize(sf::Vector2f(this->text.getGlobalBounds().width * 1.1, this->text.getGlobalBounds().height*1.35));
     setPosition(border.getPosition());
 }
 
-void Button::setBorder(sf::Color color, int thickness)
+void Button::setBorder(const sf::Color color, const int thickness)
 {
     border.setOutlineThickness(thickness);
     borderColor = color;
     border.setOutlineColor(color);
 }
 
-void Button::setBackgroundColor(sf::Color color)
+void Button::setBackgroundColor(const sf::Color color)
 {
     backgroundColor = color;
     border.setFillColor(color);
 }
 
-void Button::setOnAction(std::function<void()> onAction)
+void Button::setOnAction(const std::function<void()>& onAction)
 {
     this->onAction = onAction;
 }
 
-std::function<void()> Button::getOnAction()
+std::function<void()> Button::getOnAction() const
 {
     return onAction;
 }
@@ -106,6 +105,8 @@ void Button::handleInput(sf::Event event)
         case sf::Mouse::Left:
             if (mouseOver)
                 pressed = true;
+            break;
+        default: ;
         }
     }
 
@@ -122,7 +123,7 @@ void Button::handleInput(sf::Event event)
     }
 }
 
-void Button::update(sf::RenderWindow *window)
+void Button::update(const sf::RenderWindow *window)
 {
 
     if (disabled)
@@ -156,8 +157,7 @@ void Button::update(sf::RenderWindow *window)
     }
 }
 
-void Button::render(sf::RenderWindow *window)
-{
+void Button::render(sf::RenderWindow *window) const {
     window->draw(border);
     window->draw(text);
 
@@ -169,17 +169,17 @@ void Button::render(sf::RenderWindow *window)
     }
 }
 
-sf::FloatRect Button::getGlobalBounds()
+sf::FloatRect Button::getGlobalBounds() const
 {
     return border.getGlobalBounds();
 }
 
-sf::FloatRect Button::getLocalBounds()
+sf::FloatRect Button::getLocalBounds() const
 {
     return border.getLocalBounds();
 }
 
-sf::Vector2f Button::getPosition()
+sf::Vector2f Button::getPosition() const
 {
     return border.getPosition();
 }
@@ -191,17 +191,17 @@ void Button::setTextColor(sf::Color color)
     hoverColor = color;
 }
 
-sf::Color Button::getTextColor()
+sf::Color Button::getTextColor() const
 {
     return textColor;
 }
 
-bool Button::isMouseOver()
+bool Button::isMouseOver() const
 {
     return mouseOver;
 }
 
-bool Button::isMouseOver(sf::RectangleShape sprite, sf::RenderWindow *window)
+bool Button::isMouseOver(const sf::RectangleShape& sprite, const sf::RenderWindow *window) const
 {
     return sprite.getGlobalBounds().contains(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y);
 }

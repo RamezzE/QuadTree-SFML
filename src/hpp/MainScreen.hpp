@@ -1,25 +1,22 @@
 #pragma once
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <cmath>
 
 #include "Game.hpp"
 #include "QuadTree.hpp"
 #include "TextBox.hpp"
-#include "Common.hpp"
 #include "Particle.hpp"
 #include "Button.hpp"
 
 class MainScreen : public GameState
 {
 public:
-    MainScreen(Game *game);
+    explicit MainScreen(Game *game);
 
-    void handleInput();
-    void update(const float dt);
-    void draw();
+    void handleInput() override;
+    void update(float dt) override;
+    void draw() override;
 
 private:
     Game *game;
@@ -43,6 +40,9 @@ private:
     
     std::vector<TextBox> textboxes;
     std::vector<sf::Text> labels;
+    sf::Text fpsLabel;
+
+    sf::Clock fpsTimer;
 
     std::vector<Button> buttons;
 
@@ -50,9 +50,9 @@ private:
 
     void initializeObjects();
 
-    void moveObjects(float speed, const float dt);
+    void moveObjects(float dt);
 
     void brush();
 
-    void resize(sf::Event event);
+    void resize(const sf::Event &event);
 };

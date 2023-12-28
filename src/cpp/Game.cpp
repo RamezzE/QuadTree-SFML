@@ -1,11 +1,9 @@
-#include <iostream>
 #include "SFML/Graphics.hpp"
 
 #include "../hpp/Game.hpp"
 #include "../hpp/GameState.hpp"
 
-Game::Game(ushort width, ushort height)
-{
+Game::Game(const float width, float height): height_(height) {
     this->width = width;
     this->height = height;
 
@@ -40,12 +38,11 @@ Game::~Game()
         popState();
 }
 
-GameState *Game::CurrentState()
-{
+GameState *Game::CurrentState() const {
     if (states.empty())
         return nullptr;
-    else
-        return states.back();
+
+    return states.back();
 }
 
 void Game::gameLoop()
