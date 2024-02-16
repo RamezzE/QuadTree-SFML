@@ -17,12 +17,13 @@ Written in C++ using the SFML graphics library
 
 #### Linux
 
-- g++ 4.8 or above
+- Cmake version 3.28 or above
 
 - You can run this command on linux to install SFML
 
 ```
 $ sudo apt-get install libsfml-dev
+$ sudo pacman -S sfml
 ```
 
 #### MS Build
@@ -32,22 +33,19 @@ $ sudo apt-get install libsfml-dev
 
 ## Building
 
-### GNU Make (Method used)
+### CMake build
 
-- Install GNU Make on your device
+- install CMake version 3.28 or above
 
-- Download source code
+- git clone this repository
 
-- Edit the Makefile in the project directory to to add your SFML/include & SFML/lib paths
+- Open your terminal emulator and `cd` to the path of this project
 
-- Open your terminal in your project directory where the Makefile exists
+- run `cmake . && make && ./bin/QuadTree-SFML` to generate the make files, build the make file, and run the final build
 
-- Run Make in your terminal:
+- - After running `cmake .` you can just run `make && ./bin/QuadTree-SFML` to run the app after changes
 
-```
-$ make clean
-$ make
-```
+- - You can also just run the latest build with `./bin/QuadTree-SFML`
 
 ### MS Build 
 

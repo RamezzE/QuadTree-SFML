@@ -1,7 +1,9 @@
-//
 #include <iostream>
 #include <SFML/Graphics.hpp>
+
+#if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
+#endif
 
 #include "Game.hpp"
 #include "MainScreen.hpp"
@@ -22,9 +24,11 @@ bool showQuadTree = false, showMouseRect = false;
 
 int main()
 {
-    // Show or hide console window
+    // Show or hide console window if on windows
+#if defined(_WIN32) || defined(_WIN64)
     HWND hWnd = GetConsoleWindow();
     ShowWindow(hWnd, 0);
+#endif
 
     srand(time(NULL));
 
