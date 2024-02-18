@@ -3,3 +3,8 @@ SFML-2.5.1 (mingw)
 *.o
 .vscode
 *.exe
+bin
+CMakeFiles
+*.cmake
+CMakeCache.*
+Makefile

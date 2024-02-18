@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Game.hpp"
-
 class GameState {
 public:
 	virtual void draw() = 0;
