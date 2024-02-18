@@ -4,6 +4,8 @@ project(QuadTree LANGUAGES CXX)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
+set(CMAKE_CXX_STANDARD 17) # Sets the version of C++ used in the project
+
 include(FetchContent)
 
 if(WIN32)
@@ -36,14 +38,13 @@ if(WIN32)
 
 elseif(UNIX)
     # Linux-specific configurations
-    set(CMAKE_CXX_STANDARD 17)
-
     find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
     set(SFML_STATIC_LIBRARIES TRUE)
 
-    file(GLOB_RECURSE SRC src/*.cpp src/*.h)
+    file(GLOB_RECURSE SRC src/cpp/*.cpp) # Recursive get files from path and save as SRC
+    set(MAIN ./main.cpp) # Find Main.cpp and store in MAIN variable
 
-    add_executable(${PROJECT_NAME} ${SRC})
+    add_executable(${PROJECT_NAME} ${MAIN} ${SRC})
 
     target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 

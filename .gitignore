@@ -1,14 +1,16 @@
 SFML-2.5.1 (mingw)
 /obj
-*.o
-.vscode
-*.exe
-bin
-CMakeFiles
-*.cmake
-CMakeCache.*
-Makefile
 /.idea
-src/cpp/assets
 /cmake-build-debug
 /SFML
+/src/cpp/assets
+/build
+*.o
+*.exe
+*.cmake
+.vscode
+.cache
+bin
+CMakeFiles
+CMakeCache.*
+Makefile
