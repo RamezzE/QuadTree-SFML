@@ -349,10 +349,10 @@ void MainScreen::initializeObjects() {
 }
 
 void MainScreen::brush() {
-    if (sf::Mouse::getPosition(*(game->window)).x > boundary.getPosition().x + boundary.getSize().x
-        || sf::Mouse::getPosition(*(game->window)).x < boundary.getPosition().x
-        || sf::Mouse::getPosition(*(game->window)).y > boundary.getPosition().y + boundary.getSize().y
-        || sf::Mouse::getPosition(*(game->window)).y < boundary.getPosition().y)
+    if (sf::Mouse::getPosition(*(game->window)).x > boundary.left + boundary.width
+        || sf::Mouse::getPosition(*(game->window)).x < boundary.left
+        || sf::Mouse::getPosition(*(game->window)).y > boundary.top + boundary.height
+        || sf::Mouse::getPosition(*(game->window)).y < boundary.top)
 
         return;
 

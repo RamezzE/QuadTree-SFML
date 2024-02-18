@@ -8,44 +8,29 @@ set(CMAKE_CXX_STANDARD 17) # Sets the version of C++ used in the project
 
 include(FetchContent)
 
-if(WIN32)
-    # Windows-specific configurations
-    FetchContent_Declare(SFML
-            GIT_REPOSITORY https://github.com/SFML/SFML.git
-            GIT_TAG 2.6.x)
-    FetchContent_MakeAvailable(SFML)
+# Windows-specific configurations
+FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.6.x)
+FetchContent_MakeAvailable(SFML)
 
-    add_executable(QuadTree
-            main.cpp
-            src/cpp/Button.cpp
-            src/cpp/Common.cpp
-            src/cpp/Game.cpp
-            src/cpp/MainScreen.cpp
-            src/cpp/Particle.cpp
-            src/cpp/TextBox.cpp
-    )
+add_executable(QuadTree
+        main.cpp
+        src/cpp/Button.cpp
+        src/cpp/Common.cpp
+        src/cpp/Game.cpp
+        src/cpp/MainScreen.cpp
+        src/cpp/Particle.cpp
+        src/cpp/TextBox.cpp
+)
 
-    target_link_libraries(QuadTree PRIVATE sfml-graphics)
-    target_compile_features(QuadTree PRIVATE cxx_std_17)
+target_link_libraries(QuadTree PRIVATE sfml-graphics)
+target_compile_features(QuadTree PRIVATE cxx_std_17)
 
-    add_custom_command(
-            TARGET QuadTree
-            COMMENT "Copy OpenAL DLL"
-            PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:QuadTree>
-            VERBATIM)
+add_custom_command(
+        TARGET QuadTree
+        COMMENT "Copy OpenAL DLL"
+        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:QuadTree>
+        VERBATIM)
 
-    install(TARGETS QuadTree)
-
-elseif(UNIX)
-    # Linux-specific configurations
-    find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
-    set(SFML_STATIC_LIBRARIES TRUE)
-
-    file(GLOB_RECURSE SRC src/cpp/*.cpp) # Recursive get files from path and save as SRC
-    set(MAIN ./main.cpp) # Find Main.cpp and store in MAIN variable
-
-    add_executable(${PROJECT_NAME} ${MAIN} ${SRC})
-
-    target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
-
-endif()
+install(TARGETS QuadTree)
