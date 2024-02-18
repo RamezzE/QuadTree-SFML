@@ -1,18 +1,14 @@
-
-#include <iostream>
 #include "SFML/Graphics.hpp"
 
-#include "Game.hpp"
-#include "GameState.hpp"
+#include "../hpp/Game.hpp"
+#include "../hpp/GameState.hpp"
 
-Game::Game(ushort width, ushort height)
-{
+Game::Game(const float width, float height): height_(height) {
     this->width = width;
     this->height = height;
 
-    window = new sf::RenderWindow(sf::VideoMode(width, height), "QuadTree Collisions", sf::Style::Titlebar | sf::Style::Close);
-
-    // window->setFramerateLimit(60);
+    window = new sf::RenderWindow(sf::VideoMode(width, height), "QuadTree Visualization");
+    window->setFramerateLimit(60);
 }
 
 void Game::changeScreen(GameState *state)
@@ -42,12 +38,11 @@ Game::~Game()
         popState();
 }
 
-GameState *Game::CurrentState()
-{
+GameState *Game::CurrentState() const {
     if (states.empty())
         return nullptr;
-    else
-        return states.back();
+
+    return states.back();
 }
 
 void Game::gameLoop()

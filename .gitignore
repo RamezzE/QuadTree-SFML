@@ -8,3 +8,7 @@ CMakeFiles
 *.cmake
 CMakeCache.*
 Makefile
+/.idea
+src/cpp/assets
+/cmake-build-debug
+/SFML

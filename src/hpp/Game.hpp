@@ -9,7 +9,7 @@ typedef unsigned short ushort;
 
 class Game {
 public:
-	Game(ushort width, ushort height);
+	Game(float width, float height);
 	~Game();
 
 	void changeScreen(GameState* state);
@@ -19,11 +19,12 @@ public:
 
 	sf::RenderWindow* window;
 
-    ushort width, height;
+    float width, height;
+	float height_;
 
 private:
 	std::vector<GameState*> states;
-	GameState* CurrentState();
+	GameState* CurrentState() const;
 	
 	void pushState(GameState* state);
 	void popState();
