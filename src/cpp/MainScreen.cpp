@@ -24,7 +24,7 @@ MainScreen::MainScreen(Game* game) {
 
 #if defined(_WIN32) || defined(_WIN64)
     font->loadFromFile("assets\\fonts\\soupofjustice.ttf");
-#elif defined(__linux) || defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
     font->loadFromFile("assets/fonts/soupofjustice.ttf");
 #endif
 
