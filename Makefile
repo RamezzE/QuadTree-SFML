@@ -12,21 +12,20 @@ QUAD_TREE   := $(wildcard $(HPP_DIR)/QuadTree.hpp)
 
 CC          := g++
 CFLAGS      := -std=c++14
+LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
 
 ifeq ($(OS),Windows_NT)
     # Windows-specific settings
-    CPPFLAGS    := -I"SFML\include" -DSFML_STATIC
+    CPPFLAGS    := -I"SFML\include"
     LDFLAGS     := -L"SFML\lib"
-    LDLIBS      := -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -lopengl32 -lwinmm -lgdi32 -lsfml-main -lfreetype
-    TARGET      := "myApp.exe"
+    TARGET      := "QuadTree.exe"
     RM          := del
     SLASH       := \\
 else
     # Linux-specific settings
     CPPFLAGS    := -I/usr/include/SFML
     LDFLAGS     := -L/usr/lib
-    LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
-    TARGET      := "myApp"
+    TARGET      := "QuadTree"
     RM          := rm -f
     SLASH       := /
 endif
