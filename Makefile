@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jjoe/QUADTREE/QuadTree-SFML
+CMAKE_SOURCE_DIR = /home/jjoe/sfml-quadtree/QuadTree-SFML
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jjoe/QUADTREE/QuadTree-SFML
+CMAKE_BINARY_DIR = /home/jjoe/sfml-quadtree/QuadTree-SFML
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjoe/QUADTREE/QuadTree-SFML/CMakeFiles /home/jjoe/QUADTREE/QuadTree-SFML//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjoe/sfml-quadtree/QuadTree-SFML/CMakeFiles /home/jjoe/sfml-quadtree/QuadTree-SFML//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjoe/QUADTREE/QuadTree-SFML/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jjoe/sfml-quadtree/QuadTree-SFML/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,137 +117,185 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named QuadTree-SFML
+# Target rules for targets named QuadTree
 
 # Build rule for target.
-QuadTree-SFML: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 QuadTree-SFML
-.PHONY : QuadTree-SFML
+QuadTree: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 QuadTree
+.PHONY : QuadTree
 
 # fast build rule for target.
-QuadTree-SFML/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/build
-.PHONY : QuadTree-SFML/fast
+QuadTree/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/build
+.PHONY : QuadTree/fast
 
-src/Common.o: src/Common.cpp.o
-.PHONY : src/Common.o
-
-# target to build an object file
-src/Common.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/Common.cpp.o
-.PHONY : src/Common.cpp.o
-
-src/Common.i: src/Common.cpp.i
-.PHONY : src/Common.i
-
-# target to preprocess a source file
-src/Common.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/Common.cpp.i
-.PHONY : src/Common.cpp.i
-
-src/Common.s: src/Common.cpp.s
-.PHONY : src/Common.s
-
-# target to generate assembly for a file
-src/Common.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/Common.cpp.s
-.PHONY : src/Common.cpp.s
-
-src/Game.o: src/Game.cpp.o
-.PHONY : src/Game.o
+main.o: main.cpp.o
+.PHONY : main.o
 
 # target to build an object file
-src/Game.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/Game.cpp.o
-.PHONY : src/Game.cpp.o
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-src/Game.i: src/Game.cpp.i
-.PHONY : src/Game.i
+main.i: main.cpp.i
+.PHONY : main.i
 
 # target to preprocess a source file
-src/Game.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/Game.cpp.i
-.PHONY : src/Game.cpp.i
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-src/Game.s: src/Game.cpp.s
-.PHONY : src/Game.s
+main.s: main.cpp.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-src/Game.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/Game.cpp.s
-.PHONY : src/Game.cpp.s
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/main.cpp.s
+.PHONY : main.cpp.s
 
-src/MainScreen.o: src/MainScreen.cpp.o
-.PHONY : src/MainScreen.o
+src/cpp/Button.o: src/cpp/Button.cpp.o
+.PHONY : src/cpp/Button.o
 
 # target to build an object file
-src/MainScreen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/MainScreen.cpp.o
-.PHONY : src/MainScreen.cpp.o
+src/cpp/Button.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Button.cpp.o
+.PHONY : src/cpp/Button.cpp.o
 
-src/MainScreen.i: src/MainScreen.cpp.i
-.PHONY : src/MainScreen.i
+src/cpp/Button.i: src/cpp/Button.cpp.i
+.PHONY : src/cpp/Button.i
 
 # target to preprocess a source file
-src/MainScreen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/MainScreen.cpp.i
-.PHONY : src/MainScreen.cpp.i
+src/cpp/Button.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Button.cpp.i
+.PHONY : src/cpp/Button.cpp.i
 
-src/MainScreen.s: src/MainScreen.cpp.s
-.PHONY : src/MainScreen.s
+src/cpp/Button.s: src/cpp/Button.cpp.s
+.PHONY : src/cpp/Button.s
 
 # target to generate assembly for a file
-src/MainScreen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/MainScreen.cpp.s
-.PHONY : src/MainScreen.cpp.s
+src/cpp/Button.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Button.cpp.s
+.PHONY : src/cpp/Button.cpp.s
 
-src/TextBox.o: src/TextBox.cpp.o
-.PHONY : src/TextBox.o
+src/cpp/Common.o: src/cpp/Common.cpp.o
+.PHONY : src/cpp/Common.o
 
 # target to build an object file
-src/TextBox.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/TextBox.cpp.o
-.PHONY : src/TextBox.cpp.o
+src/cpp/Common.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Common.cpp.o
+.PHONY : src/cpp/Common.cpp.o
 
-src/TextBox.i: src/TextBox.cpp.i
-.PHONY : src/TextBox.i
+src/cpp/Common.i: src/cpp/Common.cpp.i
+.PHONY : src/cpp/Common.i
 
 # target to preprocess a source file
-src/TextBox.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/TextBox.cpp.i
-.PHONY : src/TextBox.cpp.i
+src/cpp/Common.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Common.cpp.i
+.PHONY : src/cpp/Common.cpp.i
 
-src/TextBox.s: src/TextBox.cpp.s
-.PHONY : src/TextBox.s
+src/cpp/Common.s: src/cpp/Common.cpp.s
+.PHONY : src/cpp/Common.s
 
 # target to generate assembly for a file
-src/TextBox.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/TextBox.cpp.s
-.PHONY : src/TextBox.cpp.s
+src/cpp/Common.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Common.cpp.s
+.PHONY : src/cpp/Common.cpp.s
 
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
+src/cpp/Game.o: src/cpp/Game.cpp.o
+.PHONY : src/cpp/Game.o
 
 # target to build an object file
-src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
+src/cpp/Game.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Game.cpp.o
+.PHONY : src/cpp/Game.cpp.o
 
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
+src/cpp/Game.i: src/cpp/Game.cpp.i
+.PHONY : src/cpp/Game.i
 
 # target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
+src/cpp/Game.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Game.cpp.i
+.PHONY : src/cpp/Game.cpp.i
 
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
+src/cpp/Game.s: src/cpp/Game.cpp.s
+.PHONY : src/cpp/Game.s
 
 # target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree-SFML.dir/build.make CMakeFiles/QuadTree-SFML.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
+src/cpp/Game.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Game.cpp.s
+.PHONY : src/cpp/Game.cpp.s
+
+src/cpp/MainScreen.o: src/cpp/MainScreen.cpp.o
+.PHONY : src/cpp/MainScreen.o
+
+# target to build an object file
+src/cpp/MainScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/MainScreen.cpp.o
+.PHONY : src/cpp/MainScreen.cpp.o
+
+src/cpp/MainScreen.i: src/cpp/MainScreen.cpp.i
+.PHONY : src/cpp/MainScreen.i
+
+# target to preprocess a source file
+src/cpp/MainScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/MainScreen.cpp.i
+.PHONY : src/cpp/MainScreen.cpp.i
+
+src/cpp/MainScreen.s: src/cpp/MainScreen.cpp.s
+.PHONY : src/cpp/MainScreen.s
+
+# target to generate assembly for a file
+src/cpp/MainScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/MainScreen.cpp.s
+.PHONY : src/cpp/MainScreen.cpp.s
+
+src/cpp/Particle.o: src/cpp/Particle.cpp.o
+.PHONY : src/cpp/Particle.o
+
+# target to build an object file
+src/cpp/Particle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Particle.cpp.o
+.PHONY : src/cpp/Particle.cpp.o
+
+src/cpp/Particle.i: src/cpp/Particle.cpp.i
+.PHONY : src/cpp/Particle.i
+
+# target to preprocess a source file
+src/cpp/Particle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Particle.cpp.i
+.PHONY : src/cpp/Particle.cpp.i
+
+src/cpp/Particle.s: src/cpp/Particle.cpp.s
+.PHONY : src/cpp/Particle.s
+
+# target to generate assembly for a file
+src/cpp/Particle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/Particle.cpp.s
+.PHONY : src/cpp/Particle.cpp.s
+
+src/cpp/TextBox.o: src/cpp/TextBox.cpp.o
+.PHONY : src/cpp/TextBox.o
+
+# target to build an object file
+src/cpp/TextBox.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/TextBox.cpp.o
+.PHONY : src/cpp/TextBox.cpp.o
+
+src/cpp/TextBox.i: src/cpp/TextBox.cpp.i
+.PHONY : src/cpp/TextBox.i
+
+# target to preprocess a source file
+src/cpp/TextBox.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/TextBox.cpp.i
+.PHONY : src/cpp/TextBox.cpp.i
+
+src/cpp/TextBox.s: src/cpp/TextBox.cpp.s
+.PHONY : src/cpp/TextBox.s
+
+# target to generate assembly for a file
+src/cpp/TextBox.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/QuadTree.dir/build.make CMakeFiles/QuadTree.dir/src/cpp/TextBox.cpp.s
+.PHONY : src/cpp/TextBox.cpp.s
 
 # Help Target
 help:
@@ -257,22 +305,28 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... QuadTree-SFML"
-	@echo "... src/Common.o"
-	@echo "... src/Common.i"
-	@echo "... src/Common.s"
-	@echo "... src/Game.o"
-	@echo "... src/Game.i"
-	@echo "... src/Game.s"
-	@echo "... src/MainScreen.o"
-	@echo "... src/MainScreen.i"
-	@echo "... src/MainScreen.s"
-	@echo "... src/TextBox.o"
-	@echo "... src/TextBox.i"
-	@echo "... src/TextBox.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
+	@echo "... QuadTree"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
+	@echo "... src/cpp/Button.o"
+	@echo "... src/cpp/Button.i"
+	@echo "... src/cpp/Button.s"
+	@echo "... src/cpp/Common.o"
+	@echo "... src/cpp/Common.i"
+	@echo "... src/cpp/Common.s"
+	@echo "... src/cpp/Game.o"
+	@echo "... src/cpp/Game.i"
+	@echo "... src/cpp/Game.s"
+	@echo "... src/cpp/MainScreen.o"
+	@echo "... src/cpp/MainScreen.i"
+	@echo "... src/cpp/MainScreen.s"
+	@echo "... src/cpp/Particle.o"
+	@echo "... src/cpp/Particle.i"
+	@echo "... src/cpp/Particle.s"
+	@echo "... src/cpp/TextBox.o"
+	@echo "... src/cpp/TextBox.i"
+	@echo "... src/cpp/TextBox.s"
 .PHONY : help
 
 

@@ -21,7 +21,12 @@ MainScreen::MainScreen(Game* game) {
     quadTree.setData(boundary, treeNodeCapacity);
 
     font = new sf::Font();
+
+#if defined(_WIN32) || defined(_WIN64)
     font->loadFromFile("assets\\fonts\\soupofjustice.ttf");
+#elif defined(__linux__) || defined(__APPLE__)
+    font->loadFromFile("assets/fonts/soupofjustice.ttf");
+#endif
 
     initializeObjects();
 
@@ -226,7 +231,7 @@ void MainScreen::handleInput() {
             if (event.mouseButton.button == sf::Mouse::Left)
                 pressed = false;
         } else if (event.type == sf::Event::KeyPressed) {
-            switch (event.key.code) {
+            switch (event.key.code) { // Clangd is not happy that you are not switching all cases lmao
                 case sf::Keyboard::Space:
                     pause = !pause;
                     break;
