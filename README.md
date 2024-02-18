@@ -25,7 +25,7 @@ $ sudo apt-get install libsfml-dev
 
 ### Windows
 - Install the proper SFML version from the website (MinGW version for GNU Make build or Visual C++ for MS Build)
-- Unzip the SFML downloaded folder ( You can run `choco install 7zip` to be able to unzip )
+- Unzip the SFML downloaded folder ( You can install 7zip to be able to unzip )
 
 #### MS Build
 - Visual Studio 15 or above
