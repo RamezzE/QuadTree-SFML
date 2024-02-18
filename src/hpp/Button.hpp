@@ -48,7 +48,6 @@ private:
     sf::Text text;
 
     bool mouseOver, pressed, disabled;
-    float padding;
 
     sf::Color backgroundColor, borderColor, textColor, hoverColor;
 

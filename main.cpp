@@ -8,11 +8,11 @@ typedef unsigned short ushort;
 
 ushort myWidth, myHeight;
 
-sf::Color defaultColor = sf::Color(150, 150, 150, 255);
-sf::Color collisionColor = sf::Color(0, 200, 255, 255);
+sf::Color defaultColor = sf::Color(0, 255, 0, 255);
+sf::Color collisionColor = sf::Color(255, 0, 0, 255);
 sf::Color mouseRectColor = sf::Color::Magenta;
 
-sf::Color quadTreeColor = sf::Color::Yellow;
+sf::Color quadTreeColor = sf::Color::White;
 float particleSpeed = 100.f, radius = 3.f;
 
 float borderWeight = 1.f;
@@ -22,8 +22,8 @@ int main()
 {
     srand(time(NULL));
 
-    ushort screenWidth = sf::VideoMode::getDesktopMode().width * 0.75f;
-    ushort screenHeight = sf::VideoMode::getDesktopMode().height* 0.75f;
+    const ushort screenWidth = sf::VideoMode::getDesktopMode().width * 0.75f;
+    const ushort screenHeight = sf::VideoMode::getDesktopMode().height* 0.75f;
 
     myWidth = screenWidth;
     myHeight = screenHeight;

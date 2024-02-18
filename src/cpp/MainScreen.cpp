@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <SFML/Graphics.hpp>
 
-extern sf::Color defaultColor, collisionColor, mouseRectColor;
+extern sf::Color defaultColor, collisionColor, mouseRectColor, quadTreeColor;
 extern bool showQuadTree, showMouseRect;
 extern float particleSpeed;
 
@@ -14,7 +14,7 @@ MainScreen::MainScreen(Game* game) {
     this->game = game;
 
     pause = brushMode = pressed = false;
-    boundary = sf::FloatRect(0, 0, game->width * 0.6, game->height);
+    boundary = sf::FloatRect(10, 10, game->width * 0.75, game->height - 20);
 
     treeNodeCapacity = 4, objectNum = 800, radius = 2.0;
 
@@ -368,7 +368,7 @@ void MainScreen::resize(const sf::Event& event) {
 
     game->width = event.size.width;
     game->height = event.size.height;
-    boundary = sf::FloatRect(0, 0, game->width * 0.6, game->height);
+    boundary = sf::FloatRect(10, 10, game->width * 0.75, game->height - 20);
     quadTree.setData(boundary, treeNodeCapacity);
 
     for (auto& myObject: myObjects) {

@@ -22,11 +22,13 @@ private:
             const sf::Vector2f position(boundary.left, boundary.top);
             const sf::Vector2f size(boundary.width, boundary.height);
 
-            this->lines[0] = sf::Vertex(position, sf::Color::Yellow);
-            this->lines[1] = sf::Vertex(position + sf::Vector2f(size.x, 0), sf::Color::Yellow);
-            this->lines[2] = sf::Vertex(position + size, sf::Color::Yellow);
-            this->lines[3] = sf::Vertex(position + sf::Vector2f(0, size.y), sf::Color::Yellow);
-            this->lines[4] = sf::Vertex(position, sf::Color::Yellow);
+            const sf::Color color = sf::Color::Yellow;
+
+            this->lines[0] = sf::Vertex(position, color);
+            this->lines[1] = sf::Vertex(position + sf::Vector2f(size.x, 0), color);
+            this->lines[2] = sf::Vertex(position + size, color);
+            this->lines[3] = sf::Vertex(position + sf::Vector2f(0, size.y), color);
+            this->lines[4] = sf::Vertex(position, color);
         }
 
         sf::FloatRect boundary;
