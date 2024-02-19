@@ -36,7 +36,7 @@ $ choco install make
 
 - After unzipping the MinGW file, add your path to mingw32/bin or mingw64/bin to PATH in the system environmental variables
 
-- Edit the ```SFML_DIR``` in the project directory to add your SFML folder or copy the folder to the project directory and name the folder 'SFML'
+- Edit the ```SFML_DIR``` in the Makefile to add your correct SFML folder or copy the folder to the project directory and name the folder 'SFML'
 
 #### MS Build
 - Visual Studio 15 or above
