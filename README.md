@@ -14,7 +14,7 @@ Written in C++ using the SFML graphics library
 - GNU Make
 - SFML 2.5.1 or above [[www.sfml-dev.org](https://www.sfml-dev.org/download/sfml/2.5.1/)]
 
-#### Linux
+### Linux
 - You can run these commands on linux to install g++, Make and SFML
 
 ```
@@ -25,7 +25,18 @@ $ sudo apt-get install libsfml-dev
 
 ### Windows
 - Install the proper SFML version from the website (MinGW version for GNU Make build or Visual C++ for MS Build)
-- Unzip the SFML downloaded folder ( You can run `choco install 7zip` to be able to unzip )
+- Unzip the SFML downloaded folder ( You can install 7zip to be able to unzip )
+
+#### GNU Make
+- Install GNU Make by installing [chocolatey](https://chocolatey.org/install#individual) package manager  and running this command from an elevated Command Prompt:
+```
+$ choco install make
+```
+- Install MinGW g++ [MinGW 32-bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download) or [MinGW 64-bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/7.3.0/threads-posix/seh/x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z/download) (The SFML version and the MinGW version have to match)
+
+- After unzipping the MinGW file, add your path to mingw32/bin or mingw64/bin to PATH in the system environmental variables
+
+- Edit the ```SFML_DIR``` in the project directory to add your SFML folder or copy the folder to the project directory and name the folder 'SFML'
 
 #### MS Build
 - Visual Studio 15 or above
@@ -36,19 +47,7 @@ $ sudo apt-get install libsfml-dev
 
 ### GNU Make (Method used)
 
-- Install GNU Make by installing [chocolatey](https://chocolatey.org/install#individual) package manager  and running this command from an elevated Command Prompt:
-```
-$ choco install make
-```
-- Install MinGW g++ [MinGW 32-bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/7.3.0/threads-posix/dwarf/i686-7.3.0-release-posix-dwarf-rt_v5-rev0.7z/download) or [MinGW 64-bit](https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/7.3.0/threads-posix/seh/x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z/download) (The SFML version and the MinGW version have to match)
-
-- After unzipping the MinGW file, add your path to mingw32/bin or mingw64/bin to PATH in the system environmental variables
-
 - Download source code
-
-- (Windows Only) Edit the Makefile in the project directory to to add your SFML/include & SFML/lib paths
-
-- Copy all the dlls in `</path/to/sfml/>/bin` to the project directory where the Makefile exists
 
 - Open your terminal in your project directory where the Makefile exists
 
@@ -57,19 +56,32 @@ $ choco install make
 ```
 $ make
 ```
-- You can clean the files by running:
+
+- List of make commands you can use
 ```
+# Build and run in release mode
+$ make
+
+# Build and run in debug mode
+$ make debug && make run
+
+# Rebuild in release or debug mode
+$ make rebuild
+
+# or 
+$ make rebuild-debug
+
+# Clean the files
 $ make clean
-```
-- You can run the latest compiled build using:
-```
+
+# Run the latest compiled build
 $ make run
 ```
 
 ### MS Build
 
-1. Add the `</path/to/sfml/>/include` to your **additional C++ include directories**.
-2. Add `</path/to/sfml/>/lib` to your **additional library directories**.
+1. Add the `</path/to/sfml_folder/>/include` to your **additional C++ include directories**.
+2. Add `</path/to/sfml_folder/>/lib` to your **additional library directories**.
 3. Add the SFML libraries used to your **additional dependencies**
 
    eg:

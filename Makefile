@@ -1,6 +1,11 @@
-CPP_DIR := src/cpp
-HPP_DIR := src/hpp
-OBJ_DIR := obj
+CPP_DIR     := src/cpp
+HPP_DIR     := src/hpp
+OBJ_DIR     := obj
+BIN_DIR     := bin
+
+ifeq ($(OS),Windows_NT)
+	SFML_DIR    := SFML
+endif
 
 MAIN_CPP    := main.cpp
 MAIN_OBJ    := $(OBJ_DIR)/main.o
@@ -12,27 +17,41 @@ QUAD_TREE   := $(wildcard $(HPP_DIR)/QuadTree.hpp)
 
 CC          := g++
 CFLAGS      := -std=c++14
-LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
+CFLAGS-D    := -std=c++14 -g -gdwarf-2 -fno-omit-frame-pointer
+
 
 ifeq ($(OS),Windows_NT)
     # Windows-specific settings
-    CPPFLAGS    := -I"SFML\include"
-    LDFLAGS     := -L"SFML\lib"
-    TARGET      := "QuadTree.exe"
+    CPPFLAGS    := -I"$(SFML_DIR)\include"
+    LDFLAGS     := -L"$(SFML_DIR)\lib"
+    LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
+    LDLIBS-D    := -lsfml-graphics-d -lsfml-window-d -lsfml-system-d
+    TARGET      := QuadTree.exe
     RM          := del
     SLASH       := \\
+    CP          := xcopy /s /i
+    DLLS_DIR    := $(SFML_DIR)\bin
+    MKDIR       := mkdir
 else
     # Linux-specific settings
     CPPFLAGS    := -I/usr/include/SFML
     LDFLAGS     := -L/usr/lib
-    TARGET      := "QuadTree"
+    TARGET      := QuadTree
+    LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
+    LDLIBS-D    := -lsfml-graphics -lsfml-window -lsfml-system
     RM          := rm -f
     SLASH       := /
+    CP          := cp -r
+    MKDIR       := mkdir -p
 endif
 
-.PHONY: all clean
+.PHONY: all clean debug
 
 all: build run
+
+debug: CFLAGS := $(CFLAGS-D)
+debug: LDLIBS := $(LDLIBS-D)
+debug: build
 
 $(OBJ_FILES): $(OBJ_DIR)/%.o: $(CPP_DIR)/%.cpp $(HPP_DIR)/%.hpp $(QUAD_TREE)
 	$(CC) -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
@@ -40,17 +59,42 @@ $(OBJ_FILES): $(OBJ_DIR)/%.o: $(CPP_DIR)/%.cpp $(HPP_DIR)/%.hpp $(QUAD_TREE)
 $(MAIN_OBJ): $(MAIN_CPP)
 	$(CC) -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
-build: $(OBJ_DIR) link
+build: $(OBJ_DIR) $(BIN_DIR) link symlink-assets copy-dlls
+
+rebuild: clean build
+rebuild-debug: clean debug
 
 $(OBJ_DIR):
-	@test -d "$(OBJ_DIR)" || mkdir $(OBJ_DIR)
+	@test -d "$(OBJ_DIR)" || $(MKDIR) $(OBJ_DIR)
+
+$(BIN_DIR):
+	@test -d "$(BIN_DIR)" || $(MKDIR) $(BIN_DIR)
 
 link: $(OBJ_FILES) $(MAIN_OBJ)
-	$(CC) $^ -o $(TARGET) $(LDFLAGS) $(LDLIBS)
+	$(CC) $^ -o $(BIN_DIR)/$(TARGET) $(LDFLAGS) $(LDLIBS)
+
+symlink-assets: $(BIN_DIR)
+
+ifeq ($(OS),Windows_NT)
+	@powershell -Command "New-Item -ItemType Junction -Path '$(subst /,\,$(BIN_DIR)\assets)' -Target '$(subst /,\,$(CURDIR)\assets)'"
+else
+	@if [ ! -e $(BIN_DIR)/assets ]; then ln -s $(CURDIR)/assets $(BIN_DIR)/assets; fi
+endif
+
+
+copy-dlls: $(BIN_DIR)
+ifeq ($(OS),Windows_NT)
+	@for %%I in ($(SFML_DIR)\bin\*.dll) do $(CP) "%%I" $(BIN_DIR)
+endif
+
 
 run:
-	./$(TARGET)
+ifeq ($(OS),Windows_NT)
+	cd $(BIN_DIR) && $(TARGET)
+else
+	cd $(BIN_DIR) && ./$(TARGET)
+endif
 
 clean:
 	$(RM) $(OBJ_DIR)$(SLASH)*.o
-	$(RM) $(TARGET)
+	$(RM) $(BIN_DIR)$(SLASH)$(TARGET)
