@@ -26,7 +26,7 @@ ifeq ($(OS),Windows_NT)
     LDFLAGS     := -L"$(SFML_DIR)\lib"
     LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
     LDLIBS-D    := -lsfml-graphics-d -lsfml-window-d -lsfml-system-d
-    TARGET      := QuadTree.exe
+    TARGET      := "QuadTree.exe"
     RM          := del
     SLASH       := \\
     CP          := xcopy /s /i
@@ -36,7 +36,7 @@ else
     # Linux-specific settings
     CPPFLAGS    := -I/usr/include/SFML
     LDFLAGS     := -L/usr/lib
-    TARGET      := QuadTree
+    TARGET      := "QuadTree"
     LDLIBS      := -lsfml-graphics -lsfml-window -lsfml-system
     LDLIBS-D    := -lsfml-graphics -lsfml-window -lsfml-system
     RM          := rm -f
@@ -75,16 +75,19 @@ link: $(OBJ_FILES) $(MAIN_OBJ)
 
 symlink-assets: $(BIN_DIR)
 
+symlink-assets: $(BIN_DIR)
 ifeq ($(OS),Windows_NT)
-	@powershell -Command "New-Item -ItemType Junction -Path '$(subst /,\,$(BIN_DIR)\assets)' -Target '$(subst /,\,$(CURDIR)\assets)'"
+	@if not exist $(subst /,\,$(BIN_DIR)\assets) @powershell -Command "New-Item -ItemType Junction -Path '$(subst /,\,$(BIN_DIR)\assets)' -Target '$(subst /,\,$(CURDIR)\assets)'"
 else
 	@if [ ! -e $(BIN_DIR)/assets ]; then ln -s $(CURDIR)/assets $(BIN_DIR)/assets; fi
 endif
 
 
+
 copy-dlls: $(BIN_DIR)
 ifeq ($(OS),Windows_NT)
-	@for %%I in ($(SFML_DIR)\bin\*.dll) do $(CP) "%%I" $(BIN_DIR)
+	@for %%I in ($(SFML_DIR)\bin\*.dll) do \
+		if not exist $(BIN_DIR)\%%~nxI $(CP) "%%I" $(BIN_DIR)
 endif
 
 
