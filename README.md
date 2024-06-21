@@ -3,11 +3,7 @@ Collision detection by space partitioning using a Quad Tree data structure.
 
 Written in C++ using the SFML graphics library
 
-![QuadTree Circle Collision2](https://user-images.githubusercontent.com/117018553/230356184-5a31a253-b3ce-405f-8954-cba2953ef321.gif)
-
-## Controls:
-- *Spacebar* to toggle the movement of the particles
-- *M* to toggle the visibility & function of the mouse's box query
+![Quadtree Visualizer preview](https://github.com/RamezzE/QuadTree-SFML/assets/117018553/38d2fd5f-5d53-4914-bb52-eba5ffaeb68c)
 
 ## Prerequisites
 - g++ 4.8 or above
@@ -93,7 +89,7 @@ $ make run
 
 ## Acknowledgements
 
-This QuadTree is inspired by this tutorial series https://www.youtube.com/watch?v=OJxEcs0w_kE
+This QuadTree is inspired by this tutorial [series](https://www.youtube.com/watch?v=OJxEcs0w_kE) 
 
 ## License
 
